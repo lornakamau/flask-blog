@@ -13,11 +13,11 @@ class User(UserMixin,db.Model): #db.Model helps connect our class to our databas
     id = db.Column(db.Integer,primary_key = True)
     username = db.Column(db.String(255),index = True)
     email = db.Column(db.String(255),unique = True,index = True)
-    comments = db.relationship('Comment', backref='author',lazy="dynamic")
+    comments = db.relationship('Comment', backref='user',lazy="dynamic")
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
     pass_secure = db.Column(db.String(255))
-    pitches = db.relationship('Pitch',backref = 'pitcher',lazy = "dynamic")
+    posts = db.relationship('Posts',backref = 'author',lazy = "dynamic")
 
     @property
     def password(self):
@@ -38,8 +38,8 @@ class Comment(db.Model):
     id = db.Column(db.Integer,primary_key = True)
     comment_content = db.Column(db.String())
     posted = db.Column(db.DateTime,default=datetime.utcnow)
-    author_id = db.Column(db.Integer,db.ForeignKey('users.id'))
-    pitch_id = db.Column(db.Integer, db.ForeignKey("pitches.id"))
+    user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey("post.id"))
 
     def save_comment(self):
             db.session.add(self)
@@ -52,3 +52,38 @@ class Comment(db.Model):
                 
     def __repr__(self):
         return f'COMMENT {self.comment_wording}'
+
+class Pitch(db.Model):
+        __tablename__ = 'pitches'
+        id = db.Column(db.Integer,primary_key = True)
+        title = db.Column(db.String())
+        pitch_content = db.Column(db.String())
+        posted = db.Column(db.DateTime,default=datetime.utcnow)
+        upvotes = db.Column(db.Integer)
+        downvotes = db.Column(db.Integer)
+        pitcher_id = db.Column(db.Integer,db.ForeignKey("users.id"))
+        category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
+        comments = db.relationship("Comment", backref ='pitch', lazy = "dynamic")
+
+        def save_pitch(self):
+                db.session.add(self)
+                db.session.commit()
+
+        @classmethod
+        def get_user_pitch(cls,id):
+                user_pitches = Pitch.query.filter_by(pitcher_id = id).order_by(Pitch.posted.desc())
+                return user_pitches
+
+        @classmethod
+        def get_category_pitch(cls,id):
+                category_pitches = Pitch.query.filter_by(category_id = id).order_by(Pitch.posted.desc())
+                return category_pitches
+
+        @classmethod
+        def get_pitch_id(cls,id):
+                pitch_id = Pitch.query.filter_by(id = id).order_by(Pitch.id.desc()) 
+                return pitch_id
+
+
+        def __repr__(self):
+                return f"Pitch {self.title}"
