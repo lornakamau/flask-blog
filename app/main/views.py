@@ -51,7 +51,7 @@ def update_bio(username):
     user = User.query.filter_by(username = username).first()
     if user is None:
         abort(404)
-    
+        
     form = UpdateBio()
 
     if form.validate_on_submit():
