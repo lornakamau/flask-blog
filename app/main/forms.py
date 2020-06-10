@@ -6,3 +6,7 @@ class PostForm(FlaskForm):
     title = StringField("Pitch Title", validators = [Required()])
     post_content = TextAreaField('What pitch do you want to share?',validators = [Required()] )
     submit = SubmitField('Submit')
+
+class CommentForm(FlaskForm):
+    comment_content = TextAreaField('Add a comment',validators = [Required()] )
+    submit = SubmitField('Submit')

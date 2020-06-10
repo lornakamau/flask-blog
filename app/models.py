@@ -51,7 +51,7 @@ class Comment(db.Model):
             return comments
                 
     def __repr__(self):
-        return f'COMMENT {self.comment_wording}'
+        return f'COMMENT {self.comment_content}'
 
 class Post(db.Model):
         __tablename__ = 'posts'
@@ -77,10 +77,10 @@ class Post(db.Model):
                 return all_posts
 
         @classmethod
-        def get_pitch_id(cls,id):
-                pitch_id = Pitch.query.filter_by(id = id).order_by(Pitch.id.desc()) 
-                return pitch_id
+        def get_post_id(cls,id):
+                post_id = Pitch.query.filter_by(id = id).order_by(Post.id.desc()) 
+                return post_id
 
 
         def __repr__(self):
-                return f"Pitch {self.title}"
+                return f"POST {self.title}"

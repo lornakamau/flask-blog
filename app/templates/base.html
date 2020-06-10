@@ -7,14 +7,14 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% if title %}
-    <title>{{title}}</title>
-    {% else %}
-    <title>Blog</title>
-    {% endif %}
-    {% block styles %} 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% if title %}
+  <title>{{title}}</title>
+  {% else %}
+  <title>Blog</title>
+  {% endif %}
+  {% block styles %}
   {{ super() }}
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
   <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Lato&display=swap" rel="stylesheet">
@@ -23,20 +23,11 @@
   <script src="{{url_for('static',filename='js/base.js')}}"></script>
   {% endblock %}
 </head>
+
 <body>
   <div class="container-fluid">
-    
-    <div class="row">
-      <div class="col-md-8">
-        {% block content %}
-        {% block form %}
-  
-        {% endblock%}
-        {% endblock%}
-      </div>
-      <div class="col-md-4">
-      </div>    
-    </div>
+    {% block content %}
+    {% endblock%}
   </div>
 </body>
 
