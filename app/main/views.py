@@ -45,19 +45,30 @@ def new_comment(post_id):
 
     return render_template('posts/add_comment.html', title=title, comment_form=form, posts =posts)
 
-@main.route('/user/<username>',methods = ['GET','POST'])
+@main.route('/<username>/bio',methods = ['GET','POST'])
 @login_required
 def update_bio(username):
     user = User.query.filter_by(username = username).first()
     if user is None:
         abort(404)
-        
+
     form = UpdateBio()
 
     if form.validate_on_submit():
         user.bio = form.bio.data
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for('.profile',username=user.username))
+        return redirect(url_for('main.profile',username=user.username))
 
     return render_template('profile/update_bio.html',form =form)
+
+@main.route('/<username>/pic',methods= ['POST'])
+@login_required
+def update_pic(username):
+    user = User.query.filter_by(username = username).first()
+    if 'photo' in request.files:
+        filename = photos.save(request.files['photo'])
+        path = f'photos/{filename}'
+        user.profile_pic_path = path
+        db.session.commit()
+    return redirect(url_for('main.profile',username=username))
