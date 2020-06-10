@@ -5,8 +5,12 @@ from .forms import PostForm, CommentForm, UpdateBio
 from .. import db,photos
 from flask_login import login_required, current_user
 
-# Views
 @main.route('/')
+def index():
+    title= 'Home | SoftBlog'
+    return render_template('index.html', title=title, posts=posts)
+
+@main.route('/posts')
 def posts():
 
     '''
