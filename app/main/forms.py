@@ -10,3 +10,7 @@ class PostForm(FlaskForm):
 class CommentForm(FlaskForm):
     comment_content = TextAreaField('Add a comment',validators = [Required()] )
     submit = SubmitField('Submit')
+
+class UpdateBio(FlaskForm):
+    bio = TextAreaField('Tell us about you.',validators = [Required()])
+    submit = SubmitField('Submit')

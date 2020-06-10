@@ -1,7 +1,7 @@
 from flask import render_template,abort,redirect,url_for,request,flash
 from . import main
 from ..models import User, Post, Comment
-from .forms import PostForm
+from .forms import PostForm, CommentForm, UpdateBio
 from .. import db,photos
 from flask_login import login_required, current_user
 
@@ -35,7 +35,7 @@ def new_post():
 def new_comment(post_id):
     title = 'New Comment | Blog'
     form = CommentForm()
-    posst = Post.query.filter_by(id = post_id).first()
+    posts = Post.query.filter_by(id = post_id).first()
     if form.validate_on_submit():
         comment = Comment(comment_content=form.comment_content.data, user=current_user, post_id=post_id)
         db.session.add(comment)
@@ -43,4 +43,21 @@ def new_comment(post_id):
         flash('Your comment has been added!', 'success')
         return redirect(url_for('main.home'))
 
-    return render_template('posts/add_comment.html', title=title, comment_form=form, categories=categories, pitch=pitch)
+    return render_template('posts/add_comment.html', title=title, comment_form=form, posts =posts)
+
+@main.route('/user/<username>',methods = ['GET','POST'])
+@login_required
+def update_bio(username):
+    user = User.query.filter_by(username = username).first()
+    if user is None:
+        abort(404)
+    
+    form = UpdateBio()
+
+    if form.validate_on_submit():
+        user.bio = form.bio.data
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('.profile',username=user.username))
+
+    return render_template('profile/update_bio.html',form =form)
