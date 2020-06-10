@@ -19,7 +19,7 @@ def home():
 @main.route('/new-post', methods=['GET', 'POST'])
 @login_required
 def new_post():
-    title = 'New Post | Blog'
+    title = 'New Post | SoftBlog'
     form = PostForm()
     if form.validate_on_submit():
         post = Post(post_content=form.post_content.data, author=current_user, title=form.title.data)
@@ -33,11 +33,11 @@ def new_post():
 @main.route("/comment/<int:post_id>", methods=['GET', 'POST'])
 @login_required
 def new_comment(post_id):
-    title = 'New Comment | Blog'
+    title = 'New Comment | SoftBlog'
     form = CommentForm()
     posts = Post.query.filter_by(id = post_id).first()
     if form.validate_on_submit():
-        comment = Comment(comment_content=form.comment_content.data, user=current_user, post_id=post_id)
+        comment = Comment(comment_content=form.comment_content.data, commenter=current_user, post_id=post_id)
         db.session.add(comment)
         db.session.commit()
         flash('Your comment has been added!', 'success')

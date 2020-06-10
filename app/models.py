@@ -13,7 +13,7 @@ class User(UserMixin,db.Model): #db.Model helps connect our class to our databas
     id = db.Column(db.Integer,primary_key = True)
     username = db.Column(db.String(255),index = True)
     email = db.Column(db.String(255),unique = True,index = True)
-    comments = db.relationship('Comment', backref='user',lazy="dynamic")
+    comments = db.relationship('Comment', backref='commenter',lazy="dynamic")
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
     pass_secure = db.Column(db.String(255))
