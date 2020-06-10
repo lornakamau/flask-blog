@@ -1,25 +1,32 @@
-from flask import render_template
+from flask import render_template,abort,redirect,url_for,request,flash
 from . import main
+from ..models import User, Post, Comment
+from .forms import PostForm
+from .. import db,photos
+from flask_login import login_required, current_user
 
 # Views
 @main.route('/')
-def index():
+def home():
 
     '''
-    View root page function that returns the index page and its data
+    View root page function that returns the home page and its data
     '''
-    return render_template('home.html')
+    posts = Post.get_posts()
+    title= 'Home'
+    return render_template('home.html', title=title, posts=posts)
 
-@main.route('/new-pitch', methods=['GET', 'POST'])
+@main.route('/new-post', methods=['GET', 'POST'])
 @login_required
-def new_pitch():
-    title = 'New Pitch | Pitch'
-    form = PitchForm()
+def new_post():
+    title = 'New Post | Blog'
+    form = PostForm()
     if form.validate_on_submit():
-        post = Pitch(post_content=form.post_content.data, author=current_user, title=form.title.data)
+        post = Post(post_content=form.post_content.data, author=current_user, title=form.title.data)
         db.session.add(post)
         db.session.commit()
         flash('Your post has been posted!', 'success')
-        return redirect(url_for('main.posts'))
+        return redirect(url_for('main.home'))
 
     return render_template('posts/create_post.html',title=title, pitch_form=form)
+

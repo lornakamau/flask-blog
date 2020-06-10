@@ -62,7 +62,7 @@ class Post(db.Model):
         author_id = db.Column(db.Integer,db.ForeignKey("users.id"))
         comments = db.relationship("Comment", backref ='user', lazy = "dynamic")
 
-        def save_pitch(self):
+        def save_post(self):
                 db.session.add(self)
                 db.session.commit()
 
@@ -72,9 +72,9 @@ class Post(db.Model):
                 return user_pitches
 
         @classmethod
-        def get_category_pitch(cls,id):
-                category_pitches = Pitch.query.filter_by(category_id = id).order_by(Pitch.posted.desc())
-                return category_pitches
+        def get_posts(cls):
+                all_posts = Post.query.order_by(Post.posted.desc())
+                return all_posts
 
         @classmethod
         def get_pitch_id(cls,id):
