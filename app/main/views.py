@@ -28,5 +28,19 @@ def new_post():
         flash('Your post has been posted!', 'success')
         return redirect(url_for('main.home'))
 
-    return render_template('posts/create_post.html',title=title, pitch_form=form)
+    return render_template('posts/add_post.html',title=title, pitch_form=form)
 
+@main.route("/comment/<int:post_id>", methods=['GET', 'POST'])
+@login_required
+def new_comment(post_id):
+    title = 'New Comment | Blog'
+    form = CommentForm()
+    posst = Post.query.filter_by(id = post_id).first()
+    if form.validate_on_submit():
+        comment = Comment(comment_content=form.comment_content.data, user=current_user, post_id=post_id)
+        db.session.add(comment)
+        db.session.commit()
+        flash('Your comment has been added!', 'success')
+        return redirect(url_for('main.home'))
+
+    return render_template('posts/add_comment.html', title=title, comment_form=form, categories=categories, pitch=pitch)
