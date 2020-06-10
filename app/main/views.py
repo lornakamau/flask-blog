@@ -7,14 +7,14 @@ from flask_login import login_required, current_user
 
 # Views
 @main.route('/')
-def home():
+def posts():
 
     '''
-    View root page function that returns the home page and its data
+    View root page function that returns the posts page and its data
     '''
     posts = Post.get_posts()
-    title= 'Home'
-    return render_template('home.html', title=title, posts=posts)
+    title= 'posts'
+    return render_template('posts.html', title=title, posts=posts)
 
 @main.route('/new-post', methods=['GET', 'POST'])
 @login_required
@@ -26,7 +26,7 @@ def new_post():
         db.session.add(post)
         db.session.commit()
         flash('Your post has been posted!', 'success')
-        return redirect(url_for('main.home'))
+        return redirect(url_for('main.posts'))
 
     return render_template('posts/add_post.html',title=title, pitch_form=form)
 
@@ -41,7 +41,7 @@ def new_comment(post_id):
         db.session.add(comment)
         db.session.commit()
         flash('Your comment has been added!', 'success')
-        return redirect(url_for('main.home'))
+        return redirect(url_for('main.posts'))
 
     return render_template('posts/add_comment.html', title=title, comment_form=form, posts =posts)
 

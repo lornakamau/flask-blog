@@ -1,0 +1,15 @@
+{% extends 'base.html'%}
+{% block styles%}
+{{ super() }}
+<link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}" type="text/css">
+{% endblock styles%}
+<!-- Content block -->
+{% block content %}
+<div class="container text-center">
+    <img src="{{url_for('static', filename='images/white.jpg')}}" />
+    <div class="text-content">
+        <h1>Nobody likes to hear it, but the reason you win or lose is darn near always the same <br> - pitching.</h1>
+        <h5>Earl Weaver</h5>
+    </div>
+</div>
+{% endblock %}

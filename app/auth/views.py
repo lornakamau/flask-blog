@@ -27,7 +27,7 @@ def login():
         user = User.query.filter_by(email = form.email.data).first()
         if user is not None and user.verify_password(form.password.data):
             login_user(user,form.remember.data)
-            return redirect(request.args.get('next') or url_for('main.home'))
+            return redirect(request.args.get('next') or url_for('main.posts'))
         flash('Invalid username or password', 'danger')
     
     title = "Login | Pitch"
@@ -37,4 +37,4 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for("main.home"))
+    return redirect(url_for("main.posts"))

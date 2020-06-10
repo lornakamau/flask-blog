@@ -1,5 +1,5 @@
 html {
-    font-family: 'Lato', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 body,
@@ -15,12 +15,12 @@ body,
 }
 
 a {
-    color: #14213D;
+    color: #001524;
 }
 
 .navbar {
     background-color: white;
-    color: #14213d;
+    color: #001524;
     border-radius: 0;
     margin: 0 !important;
     z-index: 1;
@@ -28,16 +28,17 @@ a {
 }
 
 .navbar-toggle {
-    color: #14213d;
+    color: #001524;
 }
 
 .navbar-toggle .icon-bar {
-    background-color: #14213D;
+    background-color: #001524;
 }
 
 #brand {
     font-size: 22px;
-    font-family: 'Fredoka One', cursive;
+    font-weight: 900;
+    font-family: 'Kaushan Script', cursive;
 }
 
 .navbar-right {
@@ -51,7 +52,7 @@ h1,
 h2,
 h3,
 h4 {
-    font-family: 'Fredoka One', cursive;
+    font-family: 'Kaushan Script', cursive;
 }
 
 a:hover {
@@ -72,7 +73,7 @@ a:hover {
         font-size: 14px;
         line-height: 1;
         float: right;
-        background-color: #14213D;
+        background-color: #001524;
         color: white;
         box-shadow: 0 0.2rem 0.5rem rgba(103, 110, 144, .2), 0 0 0 0.1rem rgba(103, 110, 144, .05);
     }
