@@ -17,7 +17,7 @@ class User(UserMixin,db.Model): #db.Model helps connect our class to our databas
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
     pass_secure = db.Column(db.String(255))
-    posts = db.relationship('Posts',backref = 'author',lazy = "dynamic")
+    posts = db.relationship('Post',backref = 'author',lazy = "dynamic")
 
     @property
     def password(self):
@@ -39,7 +39,7 @@ class Comment(db.Model):
     comment_content = db.Column(db.String())
     posted = db.Column(db.DateTime,default=datetime.utcnow)
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
-    post_id = db.Column(db.Integer, db.ForeignKey("post.id"))
+    post_id = db.Column(db.Integer, db.ForeignKey("posts.id"))
 
     def save_comment(self):
             db.session.add(self)
@@ -53,17 +53,14 @@ class Comment(db.Model):
     def __repr__(self):
         return f'COMMENT {self.comment_wording}'
 
-class Pitch(db.Model):
-        __tablename__ = 'pitches'
+class Post(db.Model):
+        __tablename__ = 'posts'
         id = db.Column(db.Integer,primary_key = True)
         title = db.Column(db.String())
-        pitch_content = db.Column(db.String())
+        post_content = db.Column(db.String())
         posted = db.Column(db.DateTime,default=datetime.utcnow)
-        upvotes = db.Column(db.Integer)
-        downvotes = db.Column(db.Integer)
-        pitcher_id = db.Column(db.Integer,db.ForeignKey("users.id"))
-        category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
-        comments = db.relationship("Comment", backref ='pitch', lazy = "dynamic")
+        author_id = db.Column(db.Integer,db.ForeignKey("users.id"))
+        comments = db.relationship("Comment", backref ='user', lazy = "dynamic")
 
         def save_pitch(self):
                 db.session.add(self)
