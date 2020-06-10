@@ -32,3 +32,9 @@ def login():
     
     title = "Login | Pitch"
     return render_template('auth/login.html', login_form = form, title=title)
+
+@auth.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("main.home"))
