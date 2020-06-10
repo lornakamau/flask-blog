@@ -67,7 +67,7 @@ class Post(db.Model):
                 db.session.commit()
 
         @classmethod
-        def get_user_pitch(cls,id):
+        def get_user_post(cls,id):
                 user_pitches = Pitch.query.filter_by(pitcher_id = id).order_by(Pitch.posted.desc())
                 return user_pitches
 

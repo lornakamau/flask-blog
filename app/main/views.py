@@ -45,6 +45,16 @@ def new_comment(post_id):
 
     return render_template('posts/add_comment.html', title=title, comment_form=form, posts =posts)
 
+@main.route('/<username>/profile')
+@login_required
+def profile(username):
+    user = User.query.filter_by(username = username).first()
+    title = current_user.username + " | Profile"
+    if user is None:
+        abort(404)
+    posts= Post.get_user_post(user.id)
+    return render_template("profile/profile.html", user = user, posts=posts, title=title)
+
 @main.route('/<username>/bio',methods = ['GET','POST'])
 @login_required
 def update_bio(username):
