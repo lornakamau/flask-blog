@@ -68,7 +68,7 @@ class Post(db.Model):
 
         @classmethod
         def get_user_post(cls,id):
-                user_pitches = Pitch.query.filter_by(pitcher_id = id).order_by(Pitch.posted.desc())
+                user_pitches = Post.query.filter_by(author_id = id).order_by(Post.posted.desc())
                 return user_pitches
 
         @classmethod
@@ -78,9 +78,15 @@ class Post(db.Model):
 
         @classmethod
         def get_post_id(cls,id):
-                post_id = Pitch.query.filter_by(id = id).order_by(Post.id.desc()) 
+                post_id = Post.query.filter_by(id = id).order_by(Post.id.desc()) 
                 return post_id
 
 
         def __repr__(self):
                 return f"POST {self.title}"
+
+class Quote:
+        def __init__(self, author, id, quote):
+                self.author = author
+                self.id = id
+                self.quote =quote
