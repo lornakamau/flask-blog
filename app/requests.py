@@ -1,8 +1,7 @@
-from app import app
 import urllib.request,json
 from .models import Quote
 
-quote_url = app.config['RANDOM_QUOTES_URL']
+quote_url = 'http://quotes.stormconsultancy.co.uk/random.json'
 
 def get_quotes():
     '''
@@ -14,9 +13,16 @@ def get_quotes():
 
         quote_results = {}
 
-        if get_quotes_response['id', 'author', 'quote']:
+        if get_quotes_response['quote']:
             quote_results['id'] = get_quotes_response['id']
             quote_results['author'] = get_quotes_response['author']
             quote_results['quote'] = get_quotes_response['quote']
     
     return quote_results
+
+def repeat_get_quotes(times, get_quotes):
+    quotes = []
+    for i in range(times): 
+        quote = get_quotes()
+        quotes.append(quote)
+    return quotes

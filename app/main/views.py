@@ -4,12 +4,13 @@ from ..models import User, Post, Comment
 from .forms import PostForm, CommentForm, UpdateBio
 from .. import db,photos
 from flask_login import login_required, current_user
-from ..requests import get_quotes
+from ..requests import get_quotes, repeat_get_quotes
 
 @main.route('/')
 def index():
     title= 'Home | SoftBlog'
-    quotes= get_quotes()
+    quote= get_quotes()
+    quotes= repeat_get_quotes(10, get_quotes)
     return render_template('index.html', title=title, posts=posts, quotes=quotes)
 
 @main.route('/posts')

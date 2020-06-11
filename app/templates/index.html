@@ -6,6 +6,20 @@
 <!-- Content block -->
 {% block content %}
 <div class="container homepage">
-    
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="item active">
+            {{quotes[0].quote}}
+          </div>
+          {% for quote in quotes %}
+            {% if quote.quote == quotes[0].quote %}
+            {% else %}
+            <div class="item">
+              {{quote.quote}}
+            </div>
+            {% endif %}
+          {% endfor %} 
+        </div>
+      </div>
 </div>
 {% endblock %}
