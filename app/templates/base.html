@@ -5,7 +5,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   {% if title %}
   <title>{{title}}</title>
   {% else %}
@@ -13,15 +14,35 @@
   {% endif %}
   {% block styles %}
   {{ super() }}
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
   <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Pacifico&family=Roboto&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" />
+  <!-- Bootstrap core CSS -->
+  <link href="{{url_for('static',filename='css/bootstrap.min.css')}}" rel="stylesheet">
+  <!-- Material Design Bootstrap -->
+  <link href="{{url_for('static',filename='css/mdb.min.css')}}" rel="stylesheet">
   <link rel="stylesheet" href="{{url_for('static',filename='css/base.css')}}" type="text/css">
+  <!-- SCRIPTS -->
+  <!-- JQuery -->
+  <script type="text/javascript" src="{{url_for('static',filename='js/jquery-3.4.1.min.js')}}"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="{{url_for('static',filename='js/popper.min.js')}}"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="{{url_for('static',filename='js/mdb.min.js')}}"></script>
+  <!-- Initializations -->
+  <script type="text/javascript">
+    // Animations initialization
+    new WOW().init();
+
+  </script>
   <script src="{{url_for('static',filename='js/base.js')}}"></script>
   {% endblock %}
 </head>
 
-<body>
+<body class="grey lighten-3">
   <div class="container-fluid">
     {% block navbar %}
     {% include 'navbar.html' %}
