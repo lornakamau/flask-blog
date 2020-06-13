@@ -1,31 +1,31 @@
 <div class="navbar" role="navigation">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <div class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"
-                style="border-color: transparent;">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </div>
-            <a class="navbar-brand" id="brand" href="/">SoftBlog</a>
-            <div class="navbar-right">
-                {% if current_user.is_authenticated %}
-                <a class="navbar-brand" style="font-size: 14px; float: right !important;" href="{{url_for('main.profile',username=current_user.username)}}">Profile</a>
-                <a class=" btn my-2 my-sm-0" href="{{url_for('auth.logout')}}" style="margin: 10px;">Logout</a>
-                {% else %}
-                <a class="navbar-brand" id="hidden"></a>
-                <a class="btn my-2 my-sm-0" style="font-size: 14px; margin: 10px; float: right !important;"
-                    href="{{url_for('auth.login')}}">Login</a>
-                <a class=" btn my-2 my-sm-0" href="{{url_for('auth.signup')}}">Sign Up</a>
-                {% endif %}
-            </div>
-            <div class="navbar-collapse collapse" style="float: left;">
-                <ul class="nav navbar-nav">
-                    <li><a href="{{url_for('main.posts')}}">Blog</a></li>
-                    <li><a href="{{url_for('main.new_post')}}"> Add a post</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
+  <div class="container-fluid">
+      <div class="navbar-header">
+          <div class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"
+              style="border-color: transparent;">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+          </div>
+          <a class="navbar-brand" id="brand" href="/">SoftBlog</a>
+          <div class="navbar-right">
+              {% if current_user.is_authenticated %}
+              <a class="navbar-brand" style="font-size: 14px; float: right !important;" href="{{url_for('main.profile',username=current_user.username)}}">Profile</a>
+              <a class=" btn my-2 my-sm-0" href="{{url_for('auth.logout')}}" style="margin: 10px;">Logout</a>
+              {% else %}
+              <a class="navbar-brand" id="hidden"></a>
+              <a class="btn my-2 my-sm-0" style="font-size: 14px; margin: 10px; float: right !important;"
+                  href="{{url_for('auth.login')}}">Login</a>
+              <a class=" btn my-2 my-sm-0" href="{{url_for('auth.signup')}}">Sign Up</a>
+              {% endif %}
+          </div>
+          <div class="navbar-collapse collapse" style="float: left;">
+              <ul class="nav navbar-nav">
+                  <li><a href="/">Home</a></li>
+                  <li><a href="{{url_for('main.new_post')}}"> Add a post</a></li>
+              </ul>
+          </div>
+      </div>
+  </div>
 </div>

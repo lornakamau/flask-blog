@@ -18,31 +18,11 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
   <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Pacifico&family=Roboto&display=swap" rel="stylesheet">
-  <!-- Bootstrap core CSS -->
-  <link href="{{url_for('static',filename='css/bootstrap.min.css')}}" rel="stylesheet">
-  <!-- Material Design Bootstrap -->
-  <link href="{{url_for('static',filename='css/mdb.min.css')}}" rel="stylesheet">
   <link rel="stylesheet" href="{{url_for('static',filename='css/base.css')}}" type="text/css">
-  <!-- SCRIPTS -->
-  <!-- JQuery -->
-  <script type="text/javascript" src="{{url_for('static',filename='js/jquery-3.4.1.min.js')}}"></script>
-  <!-- Bootstrap tooltips -->
-  <script type="text/javascript" src="{{url_for('static',filename='js/popper.min.js')}}"></script>
-  <!-- Bootstrap core JavaScript -->
-  <script type="text/javascript" src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
-  <!-- MDB core JavaScript -->
-  <script type="text/javascript" src="{{url_for('static',filename='js/mdb.min.js')}}"></script>
-  <!-- Initializations -->
-  <script type="text/javascript">
-    // Animations initialization
-    new WOW().init();
-
-  </script>
-  <script src="{{url_for('static',filename='js/base.js')}}"></script>
   {% endblock %}
 </head>
 
-<body class="grey lighten-3">
+<body class="black-background">
   <div class="container-fluid">
     {% block navbar %}
     {% include 'navbar.html' %}
