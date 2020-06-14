@@ -11,6 +11,7 @@ def index():
     title= 'Home | SoftBlog'
     quote= get_quotes()
     quotes= repeat_get_quotes(10, get_quotes)
+    posts=Posts.query.all()
     return render_template('index.html', title=title, posts=posts, quotes=quotes)
 
 @main.route('/posts/<post_id>')
