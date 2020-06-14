@@ -6,13 +6,14 @@ from .. import db,photos
 from flask_login import login_required, current_user
 from ..requests import get_quotes, repeat_get_quotes
 from werkzeug import secure_filename
+from ..email import subscribe_message
 
-@main.route('/')
+@main.route('/', methods=['GET', 'POST'])
 def index():
     title= 'Home | SoftBlog'
     quote= get_quotes()
     quotes= repeat_get_quotes(10, get_quotes)
-    posts=Post.query.all()
+    posts=Post.get_posts()
     form= SubscribeForm()
     if form.validate_on_submit():
         email = form.email.data
@@ -21,7 +22,7 @@ def index():
         db.session.add(new_mail)
         db.session.commit()
         return redirect(url_for('main.index'))
-    return render_template('index.html', title=title, posts=posts, quotes=quotes)
+    return render_template('index.html', title=title, posts=posts, quotes=quotes, subscribe_form=form)
 
 @main.route('/posts/<post_id>/<user_id>')
 def posts(post_id,user_id):
@@ -30,9 +31,12 @@ def posts(post_id,user_id):
     View root page function that returns the posts page and its data
     '''
     post= Post.get_post(post_id)
+    user=User.query.filter_by(id=user_id).first()
+    pic=user.profile_pic_path
+    print(pic)
     user= User.get_user(user_id)
     title= ' | SoftBlog'
-    return render_template('posts.html', title=title, post=post)
+    return render_template('posts.html', title=title, post=post, user=user)
 
 @main.route('/new-post', methods=['GET', 'POST'])
 @login_required
@@ -45,6 +49,12 @@ def new_post():
         post = Post(post_content=form.post_content.data, author=current_user, title=form.title.data, short_description=form.short_description.data, post_pic_path=path)
         db.session.add(post)
         db.session.commit()
+        mailList = MailList.query.all()
+        subscribers = []
+        for subscriber in mailList:
+            subscribers.append(subscriber.email)
+        for subscriber in subscribers:
+            subscribe_message("New post on SoftBlog!","email/subscribe", subscriber, user = current_user)
         flash('Your post has been posted!', 'success')
         return redirect(url_for('main.index'))
 

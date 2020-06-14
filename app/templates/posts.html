@@ -1,4 +1,5 @@
 {% extends 'base.html'%}
+{% import 'bootstrap/wtf.html' as wtf%}
 {% block styles%}
 {{ super() }}
 <link rel="stylesheet" href="{{url_for('static',filename='css/posts.css')}}" type="text/css">
@@ -20,23 +21,11 @@
             <div class="card mb-4 wow fadeIn">
               <!--Card content-->
               <div class="card-body">
-                <p class="h5 my-4">That's a very long heading </p>
+                <p class="h5 my-4">{{post.title}}</p>
                 <blockquote class="blockquote">
-                  <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                  <footer class="blockquote-footer">Someone famous in
-                    <cite title="Source Title">Source Title</cite>
-                  </footer>
+                  <p class="mb-0">{{post.short_description}}</p>
                 </blockquote>
-                <p class="h5 my-4">That's a very long heading </p>
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae, ut rerum deserunt corporis
-                  ducimus at, deleniti ea alias dolor reprehenderit sit vel. Incidunt id illum doloribus,
-                  consequuntur maiores sed eligendi.</p>
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae, ut rerum deserunt corporis
-                  ducimus at, deleniti ea alias dolor reprehenderit sit vel. Incidunt id illum doloribus,
-                  consequuntur maiores sed eligendi.</p>
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae, ut rerum deserunt corporis
-                  ducimus at, deleniti ea alias dolor reprehenderit sit vel. Incidunt id illum doloribus,
-                  consequuntur maiores sed eligendi.</p>
+                <p>{{post.post_content}}</p>
               </div>
             </div>
             <!--Author-->
@@ -46,16 +35,13 @@
               </div>
               <div class="card-body">
                 <div class="media d-block d-md-flex mt-3">
-                  <img class="d-flex mb-3 mx-auto z-depth-1" src="https://mdbootstrap.com/img/Photos/Avatars/img (30).jpg"
-                    alt="Generic placeholder image" style="width: 100px;">
+                  {% if post.author.profile_pic_path %}
+                  <img class="d-flex mb-3 mx-auto z-depth-1" src="{{url_for('static',filename=post.author.profile_pic_path)}}"
+                    alt="Generic placeholder image" style="width: 100px;height: 100px;object-fit: cover; border-radius: 50px;">
+                    {% endif %}
                   <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                    <h5 class="mt-0 font-weight-bold">Caroline Horwitz
-                    </h5>
-                    At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
-                    deleniti atque corrupti
-                    quos dolores et quas molestias excepturi sint occaecati cupiditate non provident,
-                    similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum
-                    fuga.
+                    <h5 class="mt-0 font-weight-bold">{{post.author.username}}
+                    </h5>{{post.author.bio}}
                   </div>
                 </div>
               </div>
@@ -66,7 +52,7 @@
               <div class="card-header font-weight-bold">3 comments</div>
               <div class="card-body">
                 <div class="media d-block d-md-flex mt-4">
-                  <img class="d-flex mb-3 mx-auto " src="https://mdbootstrap.com/img/Photos/Avatars/img (20).jpg" alt="Generic placeholder image" style="width:9rem">
+                  <img class="d-flex mb-3 mx-auto " src="https://mdbootstrap.com/img/Photos/Avatars/img (20).jpg" alt="Generic placeholder image" style="width: 80px;height: 80px;object-fit: cover; border-radius: 40px;">
                   <div class="media-body text-center text-md-left ml-md-3 ml-0">
                     <h5 class="mt-0 font-weight-bold">Miley Steward
                     </h5>
@@ -80,27 +66,9 @@
             <!--Comments-->
             <!--Reply-->
             <div class="card mb-3 wow fadeIn">
-              <div class="card-header font-weight-bold">Leave a reply</div>
+              <div class="card-header font-weight-bold">Leave a comment</div>
               <div class="card-body">
-                <!-- Default form reply -->
-                <form>
-                  <!-- Comment -->
-                  <div class="form-group">
-                    <label for="replyFormComment">Your comment</label>
-                    <textarea class="form-control" id="replyFormComment" rows="5"></textarea>
-                  </div>
-                  <!-- Name -->
-                  <label for="replyFormName">Your name</label>
-                  <input type="email" id="replyFormName" class="form-control">
-                  <br>
-                  <!-- Email -->
-                  <label for="replyFormEmail">Your e-mail</label>
-                  <input type="email" id="replyFormEmail" class="form-control">
-                  <div class="text-center mt-4">
-                    <button class="btn btn-info btn-md" type="submit">Post</button>
-                  </div>
-                </form>
-                <!-- Default form reply -->
+                {{wtf.quick_form(comment_form)}}
               </div>
             </div>
             <!--Reply-->

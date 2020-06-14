@@ -85,9 +85,8 @@ class Post(db.Model):
 
         @classmethod
         def get_post(cls,id):
-                post= Post.query.filter_by(id = id).order_by(Post.id.desc()) 
+                post= Post.query.filter_by(id = id).first() 
                 return post
-
 
         def __repr__(self):
                 return f"POST {self.title}"

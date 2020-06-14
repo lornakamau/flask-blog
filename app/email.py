@@ -8,3 +8,10 @@ def mail_message(subject,template,to,**kwargs):
     email = Message(subject, sender=sender_email, recipients=[to])
     email.html = render_template(template + ".html",**kwargs)
     mail.send(email)
+
+def subscribe_message(subject,template,to,**kwargs):
+    sender_email = 'lornadeveloper@gmail.com'
+
+    email = Message(subject, sender=sender_email, recipients=[to])
+    email.html = render_template(template + ".html",**kwargs)
+    mail.send(email)
