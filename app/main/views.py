@@ -35,7 +35,7 @@ def new_post():
         flash('Your post has been posted!', 'success')
         return redirect(url_for('main.posts'))
 
-    return render_template('posts/add_post.html',title=title, pitch_form=form)
+    return render_template('posts/add_post.html',title=title, post_form=form)
 
 @main.route("/comment/<int:post_id>", methods=['GET', 'POST'])
 @login_required

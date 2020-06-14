@@ -14,10 +14,10 @@ def signup():
         user = User(email = form.email.data, username = form.username.data, password = form.password.data)
         db.session.add(user)
         db.session.commit()
-        mail_message("Welcome to Pitch","email/welcome_user",user.email,user=user)
+        mail_message("Welcome to SoftBlog","email/welcome_user",user.email,user=user)
 
         return redirect(url_for('auth.login'))
-    title = "New Account | Pitch"
+    title = "New Account | SoftBlog"
     return render_template('auth/signup.html', signup_form = form, title=title)
 
 @auth.route('/login', methods = ["GET", "POST"])
@@ -30,7 +30,7 @@ def login():
             return redirect(request.args.get('next') or url_for('main.posts'))
         flash('Invalid username or password', 'danger')
     
-    title = "Login | Pitch"
+    title = "Login | SoftBlog"
     return render_template('auth/login.html', login_form = form, title=title)
 
 @auth.route('/logout')
