@@ -7,10 +7,9 @@ from flask_wtf.file import FileField, FileAllowed, FileRequired
 images = UploadSet('photos', IMAGES)
 
 class PostForm(FlaskForm):
-    title = StringField("Pitch Title", validators = [Required()])
+    title = StringField("Post Title", validators = [Required()])
     short_description = TextAreaField("Give a short decription of your post", validators=[Required()])
-    post_content = TextAreaField('Post content',validators = [Required()] )
-    post_pic_path = FileField('Post Image', validators=[FileRequired(),FileAllowed(images, 'Images only!')])
+    post_content = TextAreaField('Post Content',validators = [Required()] )
     submit = SubmitField('Submit')
 
 class CommentForm(FlaskForm):

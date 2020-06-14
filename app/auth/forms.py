@@ -24,3 +24,7 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password',validators =[Required()])
     remember = BooleanField('Remember Me') #confirms if user wants to be logged out after session
     submit = SubmitField('Sign In')
+
+class SubscribeForm(FlaskForm):
+    email = StringField('Your Email Address',validators=[Required(),Email()])
+    submit = SubmitField('Subscribe')

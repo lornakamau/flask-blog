@@ -17,9 +17,19 @@
         {{ message }}
         </div>
       {% endfor %}
-      <!-- Login form -->
+      <!-- Post form -->
+      <form action="" method="post" enctype="multipart/form-data">
       {{post_form.hidden_tag()}}
-      {{wtf.quick_form(post_form)}}
+      {{post_form.title.label}}<br>
+      {{post_form.title(class = "form-control")}}<br>
+      {{post_form.short_description.label}}<br>
+      {{post_form.short_description(class = "form-control")}}<br>
+      {{post_form.post_content.label}}<br>
+      {{post_form.post_content(class = "form-control")}}<br>
+      <label for="photo">Post Photo</label>
+      <input type="file"  name="photo" class="form-control" required><br>
+      {{post_form.submit}}
+      </form>
      </div>
      <div class="col-md-2"> </div>
     </div>

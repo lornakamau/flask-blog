@@ -33,14 +33,14 @@
           <div class="card">
             <div class="row">
               <div class="col-md-5 wrapthumbnail">
-                <div class="thumbnail"
-                  style="background-image:url({{post.post_pic_path}});">
+                <div class="thumbnail">
+                  <img src="{{url_for('static',filename=post.post_pic_path)}}" alt="">
                 </div>
               </div>
               <div class="col-md-7">
                 <div class="card-block">
                   <h2 class="card-title">
-                    <a href="{{url_for('main.posts', post_id = post.id, user_id = author.id)}}">{{post.title}}</a>
+                    <a href="{{url_for('main.posts', post_id = post.id, user_id = post.author.id)}}">{{post.title}}</a>
                   </h2>
                   <span class="card-text d-block">{{post.short_description}}</span>
                   <div class="metafooter">

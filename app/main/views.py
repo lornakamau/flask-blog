@@ -5,13 +5,14 @@ from .forms import PostForm, CommentForm, UpdateBio
 from .. import db,photos
 from flask_login import login_required, current_user
 from ..requests import get_quotes, repeat_get_quotes
+from werkzeug import secure_filename
 
 @main.route('/')
 def index():
     title= 'Home | SoftBlog'
     quote= get_quotes()
     quotes= repeat_get_quotes(10, get_quotes)
-    posts=Posts.query.all()
+    posts=Post.query.all()
     return render_template('index.html', title=title, posts=posts, quotes=quotes)
 
 @main.route('/posts/<post_id>/<user_id>')
@@ -22,7 +23,7 @@ def posts(post_id,user_id):
     '''
     post= Post.get_post(post_id)
     user= User.get_user(user_id)
-    title= post.title + ' | SoftBlog'
+    title= ' | SoftBlog'
     return render_template('posts.html', title=title, post=post)
 
 @main.route('/new-post', methods=['GET', 'POST'])
@@ -30,12 +31,14 @@ def posts(post_id,user_id):
 def new_post():
     title = 'New Post | SoftBlog'
     form = PostForm()
-    if form.validate_on_submit():
-        post = Post(post_content=form.post_content.data, author=current_user, title=form.title.data, short_description=form.short_description.data, post_pic_path=form.post_pic_path.data)
+    if form.validate_on_submit() and 'photo' in request.files:
+        filename = photos.save(request.files['photo'])
+        path=f'photos/{filename}'
+        post = Post(post_content=form.post_content.data, author=current_user, title=form.title.data, short_description=form.short_description.data, post_pic_path=path)
         db.session.add(post)
         db.session.commit()
         flash('Your post has been posted!', 'success')
-        return redirect(url_for('main.posts'))
+        return redirect(url_for('main.index'))
 
     return render_template('posts/add_post.html',title=title, post_form=form)
 
