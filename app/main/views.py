@@ -13,15 +13,15 @@ def index():
     quotes= repeat_get_quotes(10, get_quotes)
     return render_template('index.html', title=title, posts=posts, quotes=quotes)
 
-@main.route('/posts')
-def posts():
+@main.route('/posts/<post_id>')
+def posts(post_id):
 
     '''
     View root page function that returns the posts page and its data
     '''
-    posts = Post.get_posts()
-    title= 'posts'
-    return render_template('posts.html', title=title, posts=posts)
+    post= Post.get_post_id(post_id)
+    title= post.title + ' | SoftBlog'
+    return render_template('posts.html', title=title, post=post)
 
 @main.route('/new-post', methods=['GET', 'POST'])
 @login_required
@@ -29,7 +29,7 @@ def new_post():
     title = 'New Post | SoftBlog'
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(post_content=form.post_content.data, author=current_user, title=form.title.data)
+        post = Post(post_content=form.post_content.data, author=current_user, title=form.title.data, short_description=form.short_description.data, post_pic_path=form.post_pic_path.data)
         db.session.add(post)
         db.session.commit()
         flash('Your post has been posted!', 'success')

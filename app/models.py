@@ -80,8 +80,8 @@ class Post(db.Model):
 
         @classmethod
         def get_post_id(cls,id):
-                post_id = Post.query.filter_by(id = id).order_by(Post.id.desc()) 
-                return post_id
+                post= Post.query.filter_by(id = id).order_by(Post.id.desc()) 
+                return post
 
 
         def __repr__(self):
