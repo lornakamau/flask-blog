@@ -58,7 +58,9 @@ class Post(db.Model):
         id = db.Column(db.Integer,primary_key = True)
         title = db.Column(db.String())
         post_content = db.Column(db.String())
+        short_description = db.Column(db.String())
         posted = db.Column(db.DateTime,default=datetime.utcnow)
+        post_pic_path = db.Column(db.String())
         author_id = db.Column(db.Integer,db.ForeignKey("users.id"))
         comments = db.relationship("Comment", backref ='user', lazy = "dynamic")
 

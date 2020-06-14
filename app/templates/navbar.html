@@ -14,7 +14,6 @@
               <a class="navbar-brand" style="font-size: 14px; float: right !important;" href="{{url_for('main.profile',username=current_user.username)}}">Profile</a>
               <a class=" btn my-2 my-sm-0" href="{{url_for('auth.logout')}}" style="margin: 10px;">Logout</a>
               {% else %}
-              <a class="navbar-brand" id="hidden"></a>
               <a class="btn my-2 my-sm-0" style="font-size: 14px; margin: 10px; float: right !important;"
                   href="{{url_for('auth.login')}}">Login</a>
               <a class=" btn my-2 my-sm-0" href="{{url_for('auth.signup')}}">Sign Up</a>

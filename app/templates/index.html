@@ -12,21 +12,21 @@
   <div class="container">
     <section class="mt-4">
       <h2 class="text-center">Featured posts</h2>
-        <div id="myCarousel" class="carousel slide" data-ride="carousel">
-          <div class="carousel-inner">
-            <div class="item active">
-              <p>{{quotes[0].quote}}</p>
-            </div>
-            {% for quote in quotes %}
-            {% if quote.quote == quotes[0].quote %}
-            {% else %}
-            <div class="item">
-              {{quote.quote}}
-            </div>
-            {% endif %}
-            {% endfor %}
+      <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="item active">
+            <p>{{quotes[0].quote}}</p>
           </div>
+          {% for quote in quotes %}
+          {% if quote.quote == quotes[0].quote %}
+          {% else %}
+          <div class="item">
+            {{quote.quote}}
+          </div>
+          {% endif %}
+          {% endfor %}
         </div>
+      </div>
       <div class="row" id="featured" style="display: flex; flex-wrap: wrap;">
         <div class="col-md-6 col-lg-6 col-sm-6 padlr10">
           <div class="card">
@@ -36,10 +36,10 @@
                   style="background-image:url(https://i1.wp.com/blog.logrocket.com/wp-content/uploads/2019/05/running-engineering-team-right-nocdn.jpg?fit=730%2C487&#038;ssl=1);">
                 </div>
               </div>
-              <div class="col-md-7 ">
+              <div class="col-md-7">
                 <div class="card-block">
                   <h2 class="card-title">
-                    <a href="https://blog.logrocket.com/logrocket-interviews-whole-engineer/">LogRocket Interviews: How
+                    <a href="{{url_for('main.posts')}}">LogRocket Interviews: How
                       eng leaders consider the “whole engineer” to keep their teams both invested and productive</a>
                   </h2>
                   <span class="card-text d-block">Our first interview series focused on operational efficiency, but in
@@ -54,106 +54,8 @@
                         <span class="post-name">
                           <a href="https://blog.logrocket.com/author/mattangelosanto/">Matt Angelosanto</a></span><br>
                         <span class="post-date">May 27, 2020</span>
-                        <span class="dot"></span>
-                        <span class="readingtime">12 min read</span>
                       </span>
-                      <span class="post-read-more">
-                        <a href="https://blog.logrocket.com/logrocket-interviews-whole-engineer/" title="">
-                          <svg class="svgIcon-use" width="25" height="25" viewBox="0 0 25 25">
-                            <path
-                              d="M19 6c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v14.66h.012c.01.103.045.204.12.285a.5.5 0 0 0 .706.03L12.5 16.85l5.662 4.126a.508.508 0 0 0 .708-.03.5.5 0 0 0 .118-.285H19V6zm-6.838 9.97L7 19.636V6c0-.55.45-1 1-1h9c.55 0 1 .45 1 1v13.637l-5.162-3.668a.49.49 0 0 0-.676 0z"
-                              fill-rule="evenodd"></path>
-                          </svg>
-                        </a>
-                      </span> </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-6 col-sm-6 padlr10">
-          <div class="card">
-            <div class="row">
-              <div class="col-md-5 wrapthumbnail">
-                <div class="thumbnail"
-                  style="background-image:url(https://i1.wp.com/blog.logrocket.com/wp-content/uploads/2019/05/running-engineering-team-right-nocdn.jpg?fit=730%2C487&#038;ssl=1);">
-                </div>
-              </div>
-              <div class="col-md-7 ">
-                <div class="card-block">
-                  <h2 class="card-title">
-                    <a href="https://blog.logrocket.com/logrocket-interviews-whole-engineer/">LogRocket Interviews: How
-                      eng leaders consider the “whole engineer” to keep their teams both invested and productive</a>
-                  </h2>
-                  <span class="card-text d-block">Our first interview series focused on operational efficiency, but in
-                    the end, it became about management.</span>
-                  <div class="metafooter">
-                    <div class="wrapfooter">
-                      <span class="meta-footer-thumb">
-                        <img alt src="{{url_for('static', filename='images/home.jpg')}}"
-                          class="avatar avatar-40 photo author-thumb jetpack-lazy-image" height="40" width="40">
-                      </span>
-                      <span class="author-meta">
-                        <span class="post-name">
-                          <a href="https://blog.logrocket.com/author/mattangelosanto/">Matt Angelosanto</a></span><br>
-                        <span class="post-date">May 27, 2020</span>
-                        <span class="dot"></span>
-                        <span class="readingtime">12 min read</span>
-                      </span>
-                      <span class="post-read-more">
-                        <a href="https://blog.logrocket.com/logrocket-interviews-whole-engineer/" title="">
-                          <svg class="svgIcon-use" width="25" height="25" viewBox="0 0 25 25">
-                            <path
-                              d="M19 6c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v14.66h.012c.01.103.045.204.12.285a.5.5 0 0 0 .706.03L12.5 16.85l5.662 4.126a.508.508 0 0 0 .708-.03.5.5 0 0 0 .118-.285H19V6zm-6.838 9.97L7 19.636V6c0-.55.45-1 1-1h9c.55 0 1 .45 1 1v13.637l-5.162-3.668a.49.49 0 0 0-.676 0z"
-                              fill-rule="evenodd"></path>
-                          </svg>
-                        </a>
-                      </span> </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-6 col-sm-6 padlr10">
-          <div class="card">
-            <div class="row">
-              <div class="col-md-5 wrapthumbnail">
-                <div class="thumbnail"
-                  style="background-image:url(https://i1.wp.com/blog.logrocket.com/wp-content/uploads/2019/05/running-engineering-team-right-nocdn.jpg?fit=730%2C487&#038;ssl=1);">
-                </div>
-              </div>
-              <div class="col-md-7 ">
-                <div class="card-block">
-                  <h2 class="card-title">
-                    <a href="https://blog.logrocket.com/logrocket-interviews-whole-engineer/">LogRocket Interviews: How
-                      eng leaders consider the “whole engineer” to keep their teams both invested and productive</a>
-                  </h2>
-                  <span class="card-text d-block">Our first interview series focused on operational efficiency, but in
-                    the end, it became about management.</span>
-                  <div class="metafooter">
-                    <div class="wrapfooter">
-                      <span class="meta-footer-thumb">
-                        <img alt src="{{url_for('static', filename='images/home.jpg')}}"
-                          class="avatar avatar-40 photo author-thumb jetpack-lazy-image" height="40" width="40">
-                      </span>
-                      <span class="author-meta">
-                        <span class="post-name">
-                          <a href="https://blog.logrocket.com/author/mattangelosanto/">Matt Angelosanto</a></span><br>
-                        <span class="post-date">May 27, 2020</span>
-                        <span class="dot"></span>
-                        <span class="readingtime">12 min read</span>
-                      </span>
-                      <span class="post-read-more">
-                        <a href="https://blog.logrocket.com/logrocket-interviews-whole-engineer/" title="">
-                          <svg class="svgIcon-use" width="25" height="25" viewBox="0 0 25 25">
-                            <path
-                              d="M19 6c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v14.66h.012c.01.103.045.204.12.285a.5.5 0 0 0 .706.03L12.5 16.85l5.662 4.126a.508.508 0 0 0 .708-.03.5.5 0 0 0 .118-.285H19V6zm-6.838 9.97L7 19.636V6c0-.55.45-1 1-1h9c.55 0 1 .45 1 1v13.637l-5.162-3.668a.49.49 0 0 0-.676 0z"
-                              fill-rule="evenodd"></path>
-                          </svg>
-                        </a>
-                      </span> </div>
+                    </div>
                   </div>
                 </div>
               </div>
