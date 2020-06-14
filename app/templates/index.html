@@ -40,7 +40,7 @@
               <div class="col-md-7">
                 <div class="card-block">
                   <h2 class="card-title">
-                    <a href="{{url_for('main.posts', post_id = post.id)}}">{{post.title}}</a>
+                    <a href="{{url_for('main.posts', post_id = post.id, user_id = author.id)}}">{{post.title}}</a>
                   </h2>
                   <span class="card-text d-block">{{post.short_description}}</span>
                   <div class="metafooter">
@@ -51,7 +51,7 @@
                       </span>
                       <span class="author-meta">
                         <span class="post-name">
-                          <a href="https://blog.logrocket.com/author/mattangelosanto/">Matt Angelosanto</a></span><br>
+                          <a href="https://blog.logrocket.com/author/mattangelosanto/">{{post.author.username}}</a></span><br>
                         <span class="post-date">{{post.posted}}</span>
                       </span>
                     </div>

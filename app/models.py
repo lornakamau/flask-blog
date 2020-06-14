@@ -19,6 +19,11 @@ class User(UserMixin,db.Model): #db.Model helps connect our class to our databas
     pass_secure = db.Column(db.String(255))
     posts = db.relationship('Post',backref = 'author',lazy = "dynamic")
 
+    @classmethod
+    def get_user(cls,id):
+            user = User.query.filter_by(id = id).order_by(User.id.desc()) 
+            return user
+
     @property
     def password(self):
             raise AttributeError('You cannot read the password attribute') #raises an attribute error when we try to access the password
@@ -70,8 +75,8 @@ class Post(db.Model):
 
         @classmethod
         def get_user_post(cls,id):
-                user_pitches = Post.query.filter_by(author_id = id).order_by(Post.posted.desc())
-                return user_pitches
+                user_posts = Post.query.filter_by(author_id = id).order_by(Post.posted.desc())
+                return user_posts
 
         @classmethod
         def get_posts(cls):
@@ -79,7 +84,7 @@ class Post(db.Model):
                 return all_posts
 
         @classmethod
-        def get_post_id(cls,id):
+        def get_post(cls,id):
                 post= Post.query.filter_by(id = id).order_by(Post.id.desc()) 
                 return post
 

@@ -14,13 +14,14 @@ def index():
     posts=Posts.query.all()
     return render_template('index.html', title=title, posts=posts, quotes=quotes)
 
-@main.route('/posts/<post_id>')
-def posts(post_id):
+@main.route('/posts/<post_id>/<user_id>')
+def posts(post_id,user_id):
 
     '''
     View root page function that returns the posts page and its data
     '''
-    post= Post.get_post_id(post_id)
+    post= Post.get_post(post_id)
+    user= User.get_user(user_id)
     title= post.title + ' | SoftBlog'
     return render_template('posts.html', title=title, post=post)
 
