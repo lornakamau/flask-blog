@@ -97,3 +97,13 @@ class Quote:
                 self.author = author
                 self.id = id
                 self.quote =quote
+
+class MailList(db.Model):
+    __tablename__ = "maillist"
+    
+    id = db.Column(db.Integer,primary_key =True)
+    email = db.Column(db.String) 
+
+    def save_mail(self):
+        db.session.add(self)
+        db.session.commit()
