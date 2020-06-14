@@ -1,8 +1,9 @@
 from flask_wtf import FlaskForm 
 from flask_uploads import UploadSet, IMAGES
 from wtforms import SubmitField,TextAreaField,StringField,SelectField
-from wtforms.validators import Required
+from wtforms.validators import Required, Email
 from flask_wtf.file import FileField, FileAllowed, FileRequired
+from email_validator import validate_email, EmailNotValidError
 
 images = UploadSet('photos', IMAGES)
 
@@ -19,3 +20,7 @@ class CommentForm(FlaskForm):
 class UpdateBio(FlaskForm):
     bio = TextAreaField('Tell us about you.',validators = [Required()])
     submit = SubmitField('Submit')
+
+class SubscribeForm(FlaskForm):
+    email = StringField('Your Email Address',validators=[Required(),Email()])
+    submit = SubmitField('Subscribe')

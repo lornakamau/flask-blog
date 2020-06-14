@@ -1,7 +1,7 @@
 from flask import render_template,abort,redirect,url_for,request,flash
 from . import main
-from ..models import User, Post, Comment
-from .forms import PostForm, CommentForm, UpdateBio
+from ..models import User, Post, Comment, MailList
+from .forms import PostForm, CommentForm, UpdateBio, SubscribeForm
 from .. import db,photos
 from flask_login import login_required, current_user
 from ..requests import get_quotes, repeat_get_quotes
@@ -13,6 +13,14 @@ def index():
     quote= get_quotes()
     quotes= repeat_get_quotes(10, get_quotes)
     posts=Post.query.all()
+    form= SubscribeForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        new_mail = MailList(email = email)
+
+        db.session.add(new_mail)
+        db.session.commit()
+        return redirect(url_for('main.index'))
     return render_template('index.html', title=title, posts=posts, quotes=quotes)
 
 @main.route('/posts/<post_id>/<user_id>')
