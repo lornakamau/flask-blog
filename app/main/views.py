@@ -24,19 +24,24 @@ def index():
         return redirect(url_for('main.index'))
     return render_template('index.html', title=title, posts=posts, quotes=quotes, subscribe_form=form)
 
-@main.route('/posts/<post_id>/<user_id>')
+@main.route('/posts/<post_id>/<user_id>',methods=['GET', 'POST'] )
 def posts(post_id,user_id):
 
     '''
     View root page function that returns the posts page and its data
     '''
     post= Post.get_post(post_id)
-    user=User.query.filter_by(id=user_id).first()
-    pic=user.profile_pic_path
-    print(pic)
+    comments = Comment.get_comments(post_id)
+    form=CommentForm()
+    if form.validate_on_submit():
+        comment = Comment(comment_content = form.comment_content.data, commenter=current_user)
+        db.session.add(comment)
+        db.session.commit()
+        return redirect(url_for('main.posts', post_id = post.id, user_id = post.author.id ))
+
     user= User.get_user(user_id)
     title= ' | SoftBlog'
-    return render_template('posts.html', title=title, post=post, user=user)
+    return render_template('posts.html', title=title, post=post, user=user, comments=comments, comment_form=form)
 
 @main.route('/new-post', methods=['GET', 'POST'])
 @login_required

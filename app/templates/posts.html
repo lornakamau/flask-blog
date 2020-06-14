@@ -49,19 +49,20 @@
             <!--Author-->
             <!--Comments-->
             <div class="card card-comments mb-3 wow fadeIn">
-              <div class="card-header font-weight-bold">3 comments</div>
+              {% if comments %}
+              <div class="card-header font-weight-bold">comments</div>
+              {% for comment in comments %}
               <div class="card-body">
                 <div class="media d-block d-md-flex mt-4">
                   <img class="d-flex mb-3 mx-auto " src="https://mdbootstrap.com/img/Photos/Avatars/img (20).jpg" alt="Generic placeholder image" style="width: 80px;height: 80px;object-fit: cover; border-radius: 40px;">
                   <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                    <h5 class="mt-0 font-weight-bold">Miley Steward
-                    </h5>
-                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                    pariatur. Excepteur sint occaecat
-                    cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <h5 class="mt-0 font-weight-bold">{{comment.commenter.username}}</h5>
+                    {{comment.comment_content}}
                   </div>
                 </div>
               </div>
+              {% endfor %}
+              {% endif %}
             </div>
             <!--Comments-->
             <!--Reply-->
