@@ -40,8 +40,12 @@
                     alt="Generic placeholder image" style="width: 100px;height: 100px;object-fit: cover; border-radius: 50px;">
                     {% endif %}
                   <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                    <h5 class="mt-0 font-weight-bold">{{post.author.username}}
-                    </h5>{{post.author.bio}}
+                    <a href="{{url_for('main.profile',username=post.author.username)}}"><h5 class="mt-0 font-weight-bold">{{post.author.username}}</h5></a>
+                    {% if post.author.bio%}
+                    {{post.author.bio}}
+                    {%else%}
+                    <h5>{{post.author.username.capitalize()}} is a guest blogger on SoftBlog.</h5>
+                    {% endif %}
                   </div>
                 </div>
               </div>
@@ -50,7 +54,7 @@
             <!--Comments-->
             <div class="card card-comments mb-3 wow fadeIn">
               {% if comments %}
-              <div class="card-header font-weight-bold">comments</div>
+              <div class="card-header font-weight-bold">Comments</div>
               {% for comment in comments %}
               <div class="card-body">
                 <div class="media d-block d-md-flex mt-4">
@@ -62,6 +66,8 @@
                 </div>
               </div>
               {% endfor %}
+              {%else%}
+              <p>There are no comments for this post. Be the first one to add a comment.</p>
               {% endif %}
             </div>
             <!--Comments-->

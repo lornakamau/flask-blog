@@ -31,17 +31,18 @@ def posts(post_id,user_id):
     View root page function that returns the posts page and its data
     '''
     post= Post.get_post(post_id)
-    comments = Comment.get_comments(post_id)
+    all_comments = Comment.get_comments(post.id)
+    print(all_comments)
     form=CommentForm()
     if form.validate_on_submit():
-        comment = Comment(comment_content = form.comment_content.data, commenter=current_user)
+        comment = Comment(comment_content = form.comment_content.data, commenter=current_user, post_id=post_id)
         db.session.add(comment)
         db.session.commit()
         return redirect(url_for('main.posts', post_id = post.id, user_id = post.author.id ))
 
     user= User.get_user(user_id)
     title= ' | SoftBlog'
-    return render_template('posts.html', title=title, post=post, user=user, comments=comments, comment_form=form)
+    return render_template('posts.html', title=title, post=post, user=user, comments=all_comments, comment_form=form)
 
 @main.route('/new-post', methods=['GET', 'POST'])
 @login_required
@@ -81,10 +82,9 @@ def new_comment(post_id):
     return render_template('posts/add_comment.html', title=title, comment_form=form, posts =posts)
 
 @main.route('/<username>/profile')
-@login_required
 def profile(username):
     user = User.query.filter_by(username = username).first()
-    title = current_user.username + " | Profile"
+    title = user.username + " | Profile"
     if user is None:
         abort(404)
     posts= Post.get_user_post(user.id)

@@ -9,3 +9,10 @@ img{
 .row{
     padding-top: 2%;
 }
+#cards{
+    display: flex;
+    flex-wrap: wrap;
+}
+.card{
+    margin: 3%;
+}
