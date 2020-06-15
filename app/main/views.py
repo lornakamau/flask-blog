@@ -34,7 +34,7 @@ def posts(post_id):
         comment = Comment(comment_content = form.comment_content.data, commenter=current_user, post_id=post_id)
         db.session.add(comment)
         db.session.commit()
-        return redirect(url_for('main.posts', post_id = post.id, user_id = post.author.id ))
+        return redirect(url_for('main.posts', post_id = post.id))
     title= post.title + ' | SoftBlog'
     return render_template('posts.html', title=title, post=post, comments=all_comments, comment_form=form)
 
@@ -42,16 +42,39 @@ def posts(post_id):
 @login_required
 def update_post(post_id):
     post= Post.get_post(post_id)
+    heading = "Update post"
     if post.author != current_user:
         abort(403)
     form = PostForm()
+    if form.validate_on_submit() and 'photo' in request.files:
+        filename = photos.save(request.files['photo'])
+        path=f'photos/{filename}'
+        post.post_content=form.post_content.data
+        post.author=current_user
+        post.title=form.title.data
+        post.short_description=form.short_description.data
+        post.post_pic_path=path
+        db.session.commit()
+        mailList = MailList.query.all()
+        subscribers = []
+        for subscriber in mailList:
+            subscribers.append(subscriber.email)
+        for subscriber in subscribers:
+            subscribe_message("A post on SoftBlog has been updated!","email/subscribe", subscriber, user = current_user, heading=heading)
+        flash('Your post has been updated!', 'success')
+        return redirect(url_for('main.posts', post_id = post.id))
+    elif request.method == 'GET':
+        form.title.data = post.title
+        form.post_content.data = post.post_content
+        form.short_description.data = post.short_description
     title = "Update Post | SoftBlog"
-    return render_template('posts/add_post.html',title=title, post_form=form)
+    return render_template('posts/add_post.html',title=title, post_form=form, heading=heading)
 
 @main.route('/New-post', methods=['GET', 'POST'])
 @login_required
 def new_post():
     title = 'New Post | SoftBlog'
+    heading = "New Post"
     form = PostForm()
     if form.validate_on_submit() and 'photo' in request.files:
         filename = photos.save(request.files['photo'])
@@ -64,7 +87,7 @@ def new_post():
         for subscriber in mailList:
             subscribers.append(subscriber.email)
         for subscriber in subscribers:
-            subscribe_message("New post on SoftBlog!","email/subscribe", subscriber, user = current_user)
+            subscribe_message("New post on SoftBlog!","email/subscribe", subscriber, user = current_user, heading=heading)
         flash('Your post has been posted!', 'success')
         return redirect(url_for('main.index'))
 
