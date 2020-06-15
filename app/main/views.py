@@ -41,7 +41,7 @@ def posts(post_id,user_id):
         return redirect(url_for('main.posts', post_id = post.id, user_id = post.author.id ))
 
     user= User.get_user(user_id)
-    title= ' | SoftBlog'
+    title= post.title + ' | SoftBlog'
     return render_template('posts.html', title=title, post=post, user=user, comments=all_comments, comment_form=form)
 
 @main.route('/new-post', methods=['GET', 'POST'])
