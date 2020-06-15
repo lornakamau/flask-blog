@@ -24,12 +24,8 @@ def index():
         return redirect(url_for('main.index'))
     return render_template('index.html', title=title, posts=posts, quotes=quotes, subscribe_form=form)
 
-@main.route('/posts/<post_id>/<user_id>',methods=['GET', 'POST'] )
-def posts(post_id,user_id):
-
-    '''
-    View root page function that returns the posts page and its data
-    '''
+@main.route('/Posts/<post_id>',methods=['GET', 'POST'] )
+def posts(post_id):
     post= Post.get_post(post_id)
     all_comments = Comment.get_comments(post.id)
     print(all_comments)
@@ -39,12 +35,20 @@ def posts(post_id,user_id):
         db.session.add(comment)
         db.session.commit()
         return redirect(url_for('main.posts', post_id = post.id, user_id = post.author.id ))
-
-    user= User.get_user(user_id)
     title= post.title + ' | SoftBlog'
-    return render_template('posts.html', title=title, post=post, user=user, comments=all_comments, comment_form=form)
+    return render_template('posts.html', title=title, post=post, comments=all_comments, comment_form=form)
 
-@main.route('/new-post', methods=['GET', 'POST'])
+@main.route('/Posts/<post_id>/update', methods=['GET', 'POST'] )
+@login_required
+def update_post(post_id):
+    post= Post.get_post(post_id)
+    if post.author != current_user:
+        abort(403)
+    form = PostForm()
+    title = "Update Post | SoftBlog"
+    return render_template('posts/add_post.html',title=title, post_form=form)
+
+@main.route('/New-post', methods=['GET', 'POST'])
 @login_required
 def new_post():
     title = 'New Post | SoftBlog'
@@ -66,7 +70,7 @@ def new_post():
 
     return render_template('posts/add_post.html',title=title, post_form=form)
 
-@main.route("/comment/<int:post_id>", methods=['GET', 'POST'])
+@main.route("/Comment/<int:post_id>", methods=['GET', 'POST'])
 @login_required
 def new_comment(post_id):
     title = 'New Comment | SoftBlog'
@@ -81,7 +85,7 @@ def new_comment(post_id):
 
     return render_template('posts/add_comment.html', title=title, comment_form=form, posts =posts)
 
-@main.route('/<username>/profile')
+@main.route('/<username>/Profile')
 def profile(username):
     user = User.query.filter_by(username = username).first()
     title = user.username + " | Profile"
@@ -90,7 +94,7 @@ def profile(username):
     posts= Post.get_user_post(user.id)
     return render_template("profile/profile.html", user = user, posts=posts, title=title)
 
-@main.route('/<username>/bio',methods = ['GET','POST'])
+@main.route('/<username>/Update-bio',methods = ['GET','POST'])
 @login_required
 def update_bio(username):
     user = User.query.filter_by(username = username).first()
@@ -107,7 +111,7 @@ def update_bio(username):
 
     return render_template('profile/update_bio.html',form =form)
 
-@main.route('/<username>/pic',methods= ['POST'])
+@main.route('/<username>/Update-pic',methods= ['POST'])
 @login_required
 def update_pic(username):
     user = User.query.filter_by(username = username).first()

@@ -2,29 +2,35 @@
 {% import 'bootstrap/wtf.html' as wtf%}
 
 {% block content %}
-<div class="container form">
-    <div class="row">
-        <div class="col-md-2"> </div>
-        <div class="col-md-8">
-            <form action="" method="post" enctype="multipart/form-data">
-                {{signup_form.hidden_tag()}}
-                {{signup_form.email.label}}<br>
-                {{signup_form.email(class = "form-control")}}<br>
-                {{signup_form.username.label}}<br>
-                {{signup_form.username(class = "form-control")}}<br>
-                {{signup_form.password.label}}<br>
-                {{signup_form.password(class = "form-control")}}<br>
-                {{signup_form.password_confirm.label}}<br>
-                {{signup_form.password_confirm(class = "form-control")}}<br>
-                {{signup_form.bio.label}}<br>
-                {{signup_form.bio(class = "form-control")}}<br>
-                <label for="photo">Profile Photo</label>
-                <input type="file" name="photo" class="form-control" required><br>
-                {{signup_form.submit}}
-            </form>
-        </div>
-        <div class="col-md-2"></div>
+<main class="mt-5 pt-5">
+    <div class="container">
+        <section class="mt-4">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2"> </div>
+                    <div class="col-md-8">
+                        <form action="" method="post" enctype="multipart/form-data">
+                            {{signup_form.hidden_tag()}}
+                            {{signup_form.email.label}}<br>
+                            {{signup_form.email(class = "form-control")}}<br>
+                            {{signup_form.username.label}}<br>
+                            {{signup_form.username(class = "form-control")}}<br>
+                            {{signup_form.password.label}}<br>
+                            {{signup_form.password(class = "form-control")}}<br>
+                            {{signup_form.password_confirm.label}}<br>
+                            {{signup_form.password_confirm(class = "form-control")}}<br>
+                            {{signup_form.bio.label}}<br>
+                            {{signup_form.bio(class = "form-control")}}<br>
+                            <label for="photo">Profile Photo</label>
+                            <input type="file" name="photo" class="form-control" required><br>
+                            {{signup_form.submit}}
+                        </form>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+            </div>
+        </section>
     </div>
-</div>
+</main>
 
 {% endblock%}

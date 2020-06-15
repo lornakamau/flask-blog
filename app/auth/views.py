@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, flash, request
 from . import auth
 from ..models import User
 from .forms import SignUpForm, LoginForm
-from .. import db
+from .. import db,photos
 from flask_login import login_user, logout_user, login_required
 from ..email import mail_message
 
@@ -29,7 +29,7 @@ def login():
         user = User.query.filter_by(email = form.email.data).first()
         if user is not None and user.verify_password(form.password.data):
             login_user(user,form.remember.data)
-            return redirect(request.args.get('next') or url_for('main.posts'))
+            return redirect(request.args.get('next') or url_for('main.index'))
         flash('Invalid username or password', 'danger')
     
     title = "Login | SoftBlog"
