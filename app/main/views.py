@@ -109,15 +109,26 @@ def new_post():
 def new_comment(post_id):
     title = 'New Comment | SoftBlog'
     form = CommentForm()
-    posts = Post.query.filter_by(id = post_id).first()
+    post = Post.query.filter_by(id = post_id).first()
     if form.validate_on_submit():
         comment = Comment(comment_content=form.comment_content.data, commenter=current_user, post_id=post_id)
         db.session.add(comment)
         db.session.commit()
         flash('Your comment has been added!', 'success')
-        return redirect(url_for('main.posts'))
+        return redirect(url_for('main.posts', post_id = post.id))
 
-    return render_template('posts/add_comment.html', title=title, comment_form=form, posts =posts)
+    return render_template('posts/add_comment.html', title=title, comment_form=form, post=post)
+
+@main.route('/Comment/<comment_id>/delete', methods=['POST'])
+@login_required
+def delete_post(comment_id):
+    comment = Comment.get_comment(comment_id)
+    if post.author != current_user:
+        abort(403)
+    db.session.delete(comment)
+    db.session.commit()
+    flash('Comment successfully deleted!', 'success')
+    return redirect(url_for('main.index'))
 
 @main.route('/<username>/Profile')
 def profile(username):
