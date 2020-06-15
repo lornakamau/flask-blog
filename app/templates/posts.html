@@ -48,7 +48,7 @@
                 <div>
                   <button class="btn btn-sm m-1 btn-info"><a
                       href="{{url_for('main.update_post',post_id=post.id)}}">Update Post</a></button>
-                  <button class="btn btn-sm m-1 btn-danger" data-toggle="modal" data-target="#deleteModal">Delete
+                  <button class="btn btn-sm m-1 btn-danger" data-toggle="modal" data-target="#deletePostModal">Delete
                     Post</button>
                 </div>
                 {%endif%}
@@ -70,6 +70,7 @@
                   <h5 class="mt-0 font-weight-bold">{{comment.commenter.username}}</h5>
                   {{comment.comment_content}}
                 </div>
+                <button class="btn btn-sm m-1 btn-danger" data-toggle="modal" data-target="#deleteCommentModal">Delete Comment</button>
               </div>
             </div>
             {% endfor %}
@@ -161,20 +162,39 @@
   </div>
 </main>
 <!--Main layout-->
-<!-- Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+<!-- Modals -->
+<div class="modal fade" id="deletePostModal" tabindex="-1" role="dialog" aria-labelledby="deletePostModalLabel"
   aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="deleteModalLabel">Delete {{post.title}}?</h5>
+        <h5 class="modal-title" id="deletePostModalLabel">Delete post?</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <form action="{{url_for('delete_post, post_id=post.id')}}" method="POST">
+        <form action="{{url_for('main.delete_post',post_id=post.id)}}" method="POST" style="display: inline;">
+          <button type="submit" class="btn btn-danger">Yes, delete post</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="deleteCommentModal" tabindex="-1" role="dialog" aria-labelledby="deleteCommentModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteCommentModalLabel">Delete post?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <form action="{{url_for('main.delete_comment',comment_id=comment.id)}}" method="POST" style="display: inline;">
           <button type="submit" class="btn btn-danger">Yes, delete post</button>
         </form>
       </div>
