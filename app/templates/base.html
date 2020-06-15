@@ -14,6 +14,9 @@
   {% endif %}
   {% block styles %}
   {{ super() }}
+  <!--Importing the simple mde css and js files  -->
+  {{ simplemde.css}}
+  {{ simplemde.js }}
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">

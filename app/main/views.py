@@ -119,16 +119,17 @@ def new_comment(post_id):
 
     return render_template('posts/add_comment.html', title=title, comment_form=form, post=post)
 
-@main.route('/Comment/<comment_id>/delete', methods=['POST'])
+@main.route('/Comment/<post_id>/<comment_id>/delete', methods=['POST'])
 @login_required
-def delete_post(comment_id):
+def delete_comment(post_id,comment_id):
+    post= Post.get_post(post_id)
     comment = Comment.get_comment(comment_id)
     if post.author != current_user:
         abort(403)
     db.session.delete(comment)
     db.session.commit()
     flash('Comment successfully deleted!', 'success')
-    return redirect(url_for('main.index'))
+    return redirect(url_for('main.posts', post_id=post.id))
 
 @main.route('/<username>/Profile')
 def profile(username):
