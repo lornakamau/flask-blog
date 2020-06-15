@@ -52,8 +52,12 @@ class Comment(db.Model):
 
     @classmethod
     def get_comments(cls,id):
-            all_comments = Comment.query.filter_by(post_id=id).order_by(Comment.posted.desc())
-            return all_comments
+        all_comments = Comment.query.filter_by(post_id=id).order_by(Comment.posted.desc())
+        return all_comments
+    @classmethod
+    def get_comment(cls,id):
+        comment= Comment.query.filter_by(id = id).first() 
+        return comment
                 
     def __repr__(self):
         return f'COMMENT {self.comment_content}'
