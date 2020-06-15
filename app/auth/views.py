@@ -10,8 +10,10 @@ from ..email import mail_message
 @auth.route('/signup', methods = ["GET", "POST"])
 def signup():
     form = SignUpForm()
-    if form.validate_on_submit():
-        user = User(email = form.email.data, username = form.username.data, password = form.password.data)
+    if form.validate_on_submit() and 'photo' in request.files:
+        filename = photos.save(request.files['photo'])
+        path=f'photos/{filename}'
+        user = User(email = form.email.data, username = form.username.data, password = form.password.data, bio=form.bio.data, profile_pic_path=path)
         db.session.add(user)
         db.session.commit()
         mail_message("Welcome to SoftBlog","email/welcome_user",user.email,user=user)
