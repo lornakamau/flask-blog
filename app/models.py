@@ -19,6 +19,10 @@ class User(UserMixin,db.Model): #db.Model helps connect our class to our databas
     pass_secure = db.Column(db.String(255))
     posts = db.relationship('Post',backref = 'author',lazy = "dynamic")
 
+    def save_user(self):
+            db.session.add(self)
+            db.session.commit()
+
     @classmethod
     def get_user(cls,id):
             user = User.query.filter_by(id = id).order_by(User.id.desc()) 
@@ -54,6 +58,7 @@ class Comment(db.Model):
     def get_comments(cls,id):
         all_comments = Comment.query.filter_by(post_id=id).order_by(Comment.posted.desc())
         return all_comments
+        
     @classmethod
     def get_comment(cls,id):
         comment= Comment.query.filter_by(id = id).first() 
