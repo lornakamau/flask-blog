@@ -8,64 +8,74 @@
 <!--Main layout-->
 <main class="mt-5 mb-5">
   <div class="container">
-      <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8 mb-4">
-          <div class="card-body">
-            <div class="media d-block d-md-flex mt-3">
-              <img class="mb-3 mx-auto z-depth-1" src="{{url_for('static',filename=post.author.profile_pic_path)}}"
-                alt="" style="width: 100px;height: 100px;object-fit: cover; border-radius: 50px;">
-              <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                <a href="{{url_for('main.profile',username=post.author.username)}}">
-                  <h5 class="mt-0 font-weight-bold">{{post.author.username}}</h5>
-                </a>
-                {{post.author.bio}}
-              </div>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8 mb-4">
+        <!--Flash message -->
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-success">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          {{ message }}
+        </div>
+        {% endfor %}
+        <div class="card-body">
+          <div class="media d-block d-md-flex mt-3">
+            <img class="mb-3 mx-auto z-depth-1" src="{{url_for('static',filename=post.author.profile_pic_path)}}" alt=""
+              style="width: 80px;height: 80px;object-fit: cover; border-radius: 40px;">
+            <div class="media-body text-center text-md-left ml-md-3 ml-0">
+              <a href="{{url_for('main.profile',username=post.author.username)}}">
+                <h5 class="mt-0 font-weight-bold">{{post.author.username}}</h5>
+              </a>
+              {%if post.author.bio%}
+              {{post.author.bio}}
+              {%endif%}
             </div>
-          </div>
-          <div class="mb-3">
-            <h1 class="my-4 text-left">{{post.title}}</h1>
-            <p class="text-muted">{{post.posted.strftime('%B %d, %Y')}}</p><br>
-            <!--Featured Image-->
-            <img src="{{url_for('static',filename=post.post_pic_path)}}" class="img-fluid featured-image" alt=""
-              width="730" height="300" style="object-fit: cover; max-height: 300px !important;">
-            <!--/.Featured Image-->
-            <blockquote class="blockquote">
-              <p class="mb-0">{{post.short_description}}</p>
-            </blockquote>
-            {{format_post|safe}}
-          </div>
-          <div class="mt-3">
-            {% for comment in comments %}
-            {% if comment.id == comments[0].id%}
-            <p class="card-header font-weight-bold">Comments</p>
-            {%endif%}
-            <div class="card-comments mb-3">
-              <div class="card-body">
-                <div class="media d-block d-md-flex mt-4">
-                  <img class="d-flex mb-3 mx-auto " src="https://mdbootstrap.com/img/Photos/Avatars/img (20).jpg"
-                    alt="Generic placeholder image"
-                    style="width: 80px;height: 80px;object-fit: cover; border-radius: 40px;">
-                  <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                    <h5 class="mt-0 font-weight-bold">{{comment.commenter.username}}</h5>
-                    {{comment.comment_content}}
-                  </div>
-                  {% if post.author == current_user%}
-                  <button class="btn btn-sm m-1 btn-danger" data-toggle="modal" data-target="#deleteCommentModal">Delete
-                    Comment</button>
-                  {%endif%}
-                </div>
-              </div>
-            </div>
-            {% endfor %}
-          </div>
-          <div class="mt-3 ">
-            {{comment_form.hidden_tag()}}
-            {{wtf.quick_form(comment_form)}}
           </div>
         </div>
-        <div class="col-md-2"></div>
+        <div class="mb-3">
+          <h1 class="my-4 text-left" style="margin: 4px!important; margin-top: 25px!important;">{{post.title}}</h1>
+          <p class="text-muted">{{post.posted.strftime('%B %d, %Y')}}</p>
+          <!--Featured Image-->
+          <img src="{{url_for('static',filename=post.post_pic_path)}}" class="img-fluid featured-image" alt=""
+            width="730" height="300" style="object-fit: cover; max-height: 300px !important;">
+          <!--/.Featured Image-->
+          <blockquote class="blockquote">
+            <p class="mb-0">{{post.short_description}}</p>
+          </blockquote>
+          {{format_post|safe}}
+        </div>
+        <br>
+        <div class="mt-3">
+          {% for comment in comments %}
+          {% if comment.id == comments[0].id%}
+          <p class="card-header font-weight-bold">Comments</p>
+          {%endif%}
+          <div class="card-comments mb-3">
+            <div class="card-body">
+              <div class="media d-block d-md-flex mt-4">
+                <img class="d-flex mb-3 mx-auto " src="https://mdbootstrap.com/img/Photos/Avatars/img (20).jpg"
+                  alt="Generic placeholder image"
+                  style="width: 80px;height: 80px;object-fit: cover; border-radius: 40px;">
+                <div class="media-body text-center text-md-left ml-md-3 ml-0">
+                  <h5 class="mt-0 font-weight-bold">{{comment.commenter.username}}</h5>
+                  {{comment.comment_content}}
+                </div>
+                {% if post.author == current_user%}
+                <button class="btn-sm m-1 btn-delete" data-toggle="modal" data-target="#deleteCommentModal"><i class="fas fa-trash-alt"></i>&nbsp;&nbsp;Delete</button>
+                {%endif%}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <br>
+        <div class="mt-3 ">
+          {{comment_form.hidden_tag()}}
+          {{wtf.quick_form(comment_form)}}
+        </div>
       </div>
+      <div class="col-md-2"></div>
+    </div>
 
   </div>
 </main>
@@ -99,7 +109,8 @@
       <div class="col-md-4"></div>
       <div class="col-md-4">
         <p>Be the first one to be notified of a new post</p>
-        {{wtf.quick_form(subscribe_form)}}</div>
+        {{wtf.quick_form(subscribe_form)}}
+      </div>
       <div class="col-md-4"></div>
     </div>
   </div>

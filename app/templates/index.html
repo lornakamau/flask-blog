@@ -7,32 +7,47 @@
 <!-- Content block -->
 {% block content %}
 <!--Main layout-->
-<main class="mt-5 mb-5">
+<main class="mt-5">
   <div id="myCarousel" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
       <div class="item active">
-        <img src="{{url_for('static',filename='images/home2.jpg')}}" alt="..." class="img-responsive">
+        <img src="{{url_for('static',filename='images/dev.jpg')}}" alt="..." class="img-responsive">
         <div class="carousel-caption">
-        <p>{{quotes[0].quote}}</p>
+          <p>{{quotes[0].quote}}</p>
         </div>
       </div>
       {% for quote in quotes %}
       {% if quote.quote == quotes[0].quote %}
       {% else %}
       <div class="item">
-        <img src="{{url_for('static',filename='images/home2.jpg')}}" alt="..." class="img-responsive">
+        <img src="{{url_for('static',filename='images/dev.jpg')}}" alt="..." class="img-responsive">
         <div class="carousel-caption">
-        {{quote.quote}}
+          {{quote.quote}}
         </div>
       </div>
       {% endif %}
       {% endfor %}
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6 mt-4">
+        <!--Flash message -->
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-success">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          {{ message }}
+        </div>
+        {% endfor %}
+      </div>
+      <div class="col-md-3"></div>
+    </div>
     <h2 class="text-center">Featured posts</h2>
+    <hr style="width:30%">
+    <br>
     <div class="row" id="featured" style="display: flex; flex-wrap: wrap;">
-      {% for post in posts %}
+      {% for post in posts.items %}
       <div class="col-md-6 col-lg-6 col-sm-6 padlr10">
         <div class="card">
           <div class="row">
@@ -77,7 +92,8 @@
       <div class="col-md-4"></div>
       <div class="col-md-4">
         <p>Be the first one to be notified of a new post</p>
-        {{wtf.quick_form(subscribe_form)}}</div>
+        {{wtf.quick_form(subscribe_form)}}
+      </div>
       <div class="col-md-4"></div>
     </div>
   </div>

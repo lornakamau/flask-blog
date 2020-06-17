@@ -9,7 +9,7 @@ images = UploadSet('photos', IMAGES)
 
 class PostForm(FlaskForm):
     title = StringField("Post Title", validators = [Required()])
-    short_description = StringField("Give a short decription of your post",validators = [Required(),Length(min=2,max=60,message='Must be shorter than 60 characters')])
+    short_description = StringField("Give a short decription of your post",validators = [Required(),Length(min=20,max=100,message='Must be between 20-100 characters')])
     post_content = TextAreaField('Post Content')
     submit = SubmitField('Submit')
 

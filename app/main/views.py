@@ -8,13 +8,15 @@ from flask_login import login_required, current_user
 from ..requests import get_quotes, repeat_get_quotes
 from werkzeug import secure_filename
 from ..email import subscribe_message
+from flask_paginate import Pagination, get_page_parameter
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
     title= 'Home | SoftBlog'
     quote= get_quotes()
     quotes= repeat_get_quotes(10, get_quotes)
-    posts=Post.get_posts()
+    all_posts=Post.get_posts()
+    posts=all_posts.paginate(per_page=5)
     form= SubscribeForm()
     if form.validate_on_submit():
         email = form.email.data
@@ -39,6 +41,7 @@ def posts(post_id):
         comment = Comment(comment_content = comment_form.comment_content.data, commenter=current_user, post_id=post_id)
         db.session.add(comment)
         db.session.commit()
+        flash('Your comment has been added!', 'success')
         return redirect(url_for('main.posts', post_id = post.id))
     subscribe_form= SubscribeForm()
     if subscribe_form.validate_on_submit():
@@ -76,7 +79,7 @@ def new_post():
         for subscriber in mailList:
             subscribers.append(subscriber.email)
         for subscriber in subscribers:
-            subscribe_message("New post on SoftBlog!","email/subscribe", subscriber, user = current_user, heading=heading)
+            subscribe_message("New post on SoftBlog!","email/subscribe", subscriber, user = current_user, post=post, heading=heading)
         flash('Your post has been posted!', 'success')
         return redirect(url_for('main.index'))
 
@@ -123,7 +126,7 @@ def delete_post(post_id):
     db.session.delete(post)
     db.session.commit()
     flash('Your post has been deleted!', 'success')
-    return redirect(url_for('main.posts', post_id = post.id))
+    return redirect(url_for('main.profile', username = current_user.username))
 
 @main.route("/Comment/<int:post_id>", methods=['GET', 'POST'])
 @login_required

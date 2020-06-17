@@ -6,91 +6,108 @@
 {% block content %}
 <!--Main layout-->
 <main class="mt-5 mb-5">
-  <div class="container">
-    <div class="container-fluid">
-      <div class="row text-center">
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
-          <!--Flash message -->
-          {% for message in get_flashed_messages() %}
-          <div class="alert alert-success">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            {{ message }}
-          </div>
-          {% endfor %}
-          <h2> {{user.username| capitalize}}'s Profile </h2>
-          {% if user.profile_pic_path %}
-          <img class="author-avatar" src="{{url_for('static',filename=user.profile_pic_path)}}" alt=""><br><br>
-          {%else%}
-          <p><b>No profile picture</b></p>
-          {% endif %}
-          <!--Displaying user bio-->
-          {% if user.bio %}
-          <p> {{user.bio}}</p>
-          {%else%}
-          <p><b>{{user.username| capitalize}} has no bio.</b></p>
-          {% if user == current_user %}
-          <a href="{{url_for('main.update_bio',username=user.username)}}">Edit Bio</a><br><br>
-          {% endif %}
-          {% endif %}
-          {% if user == current_user %}
-          {% if user.bio %}
-          <a href="{{url_for('main.update_bio',username=user.username)}}">Edit Bio</a><br><br>
-          {% endif %}
-          {% endif %}
-          {% if user == current_user %}
-          <p><b>Update Profile Picture</b></p>
-          <form action="{{url_for('main.update_pic',username=user.username)}}" method="post"
-            enctype="multipart/form-data">
-            <input type="file" name="photo" class="form-control" required>
-            <input type="submit">
-          </form>
-          {% endif %}
-        </div>
-        <div class="col-md-4"></div>
+  <div class="container-fluid">
+    <div class="row text-center">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <h2> {{user.username| capitalize}}'s Profile </h2>
+        {% if user.profile_pic_path %}
+        <img class="author-avatar" src="{{url_for('static',filename=user.profile_pic_path)}}" alt=""><br><br>
+        {%else%}
+        <p><b>No profile picture</b></p>
+        {% endif %}
+        <!--Displaying user bio-->
+        {% if user.bio %}
+        <p> {{user.bio}}</p>
+        {%else%}
+        <p><b>{{user.username| capitalize}} has no bio.</b></p>
+        {% if user == current_user %}
+        <a href="{{url_for('main.update_bio',username=user.username)}}">Edit Bio</a><br><br>
+        {% endif %}
+        {% endif %}
+        {% if user == current_user %}
+        {% if user.bio %}
+        <a href="{{url_for('main.update_bio',username=user.username)}}">Edit Bio</a><br><br>
+        {% endif %}
+        {% endif %}
+        {% if user == current_user %}
+        <p><b>Update Profile Picture</b></p>
+        <form action="{{url_for('main.update_pic',username=user.username)}}" method="post"
+          enctype="multipart/form-data">
+          <input type="file" name="photo" class="form-control" required>
+          <input type="submit">
+        </form>
+        {% endif %}
       </div>
-      <div class="row" id="featured">
-        <h3 class="text-center">Posts by {{user.username.capitalize()}}</h3>
-        <div style="display: flex; flex-wrap: wrap;">
-          {% for post in posts %}
-          <div class="col-md-6 col-lg-6 col-sm-6 padlr10">
-            <div class="card">
-              <div class="row">
-                <div class="col-md-5 wrapthumbnail">
-                  <div class="thumbnail">
-                    <img src="{{url_for('static',filename=post.post_pic_path)}}" alt="">
-                  </div>
-                </div>
-                <div class="col-md-7">
-                  <div class="card-block">
-                    <h2 class="card-title">
-                      <a href="{{url_for('main.posts', post_id = post.id)}}">{{post.title}}</a>
-                    </h2>
-                    <span class="card-text d-block">{{post.short_description}}</span>
-                    <div class="metafooter">
-                      <div class="wrapfooter">
-                        {% if post.author == current_user%}
-                        <div>
-                          <button class="btn-sm m-1 btn-update"><a
-                              href="{{url_for('main.update_post',post_id=post.id)}}"><i
-                                class="fas fa-pencil-alt"></i>&nbsp;Update</a></button>
-                          <button class="btn-sm m-1 btn-delete" data-toggle="modal" data-target="#deletePostModal"><i
-                              class="fas fa-trash-alt"></i>&nbsp;Delete</button>
-                        </div>
-                        {%endif%}
-                      </div>
-                    </div>
+      <div class="col-md-4"></div>
+    </div>
+    <h3 class="text-center">Posts by {{user.username.capitalize()}}</h3>
+    <hr style="width:30%">
+    <br>
+    <div class="row text-center">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <!--Flash message -->
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-success">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          {{ message }}
+        </div>
+        {% endfor %}
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+    <div class="row" id="featured" style="display: flex; flex-wrap: wrap;">
+      {% for post in posts %}
+      <div class="col-md-6 col-lg-6 col-sm-6 padlr10">
+        <div class="card">
+          <div class="row">
+            <div class="col-md-5 wrapthumbnail">
+              <div class="thumbnail">
+                <img src="{{url_for('static',filename=post.post_pic_path)}}" alt="">
+              </div>
+            </div>
+            <div class="col-md-7">
+              <div class="card-block">
+                <h2 class="card-title">
+                  <a href="{{url_for('main.posts', post_id = post.id)}}">{{post.title}}</a>
+                </h2>
+                <span class="card-text d-block">{{post.short_description}}</span>
+                <div class="metafooter">
+                  <div class="wrapfooter">
+                    {% if post.author == current_user%}
+                    <span class="meta-footer-thumb">
+                      <img alt src="{{url_for('static', filename='images/home.jpg')}}"
+                        class="avatar avatar-40 photo author-thumb jetpack-lazy-image" height="40" width="40">
+                    </span>
+                    <span class="author-meta">
+                      <span class="post-name">
+                        <button class="btn-sm m-1 btn-update"><a href="{{url_for('main.update_post',post_id=post.id)}}"><i
+                          class="fas fa-pencil-alt"></i>&nbsp;Update</a></button>
+                      <span class="post-date"><button class="btn-sm m-1 btn-delete" data-toggle="modal" data-target="#deletePostModal"><i
+                        class="fas fa-trash-alt"></i>&nbsp;&nbsp;Delete</button></span>
+                    </span>
+                    {%else%}
+                    <span class="meta-footer-thumb">
+                      <img alt src="{{url_for('static', filename='images/home.jpg')}}"
+                        class="avatar avatar-40 photo author-thumb jetpack-lazy-image" height="40" width="40">
+                    </span>
+                    <span class="author-meta">
+                      <span class="post-name">
+                        <a
+                          href="{{url_for('main.profile',username=post.author.username)}}">{{post.author.username}}</a></span><br>
+                      <span class="post-date">{{post.posted.strftime('%B %d, %Y')}}</span>
+                    </span>
+                    {%endif%}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          {% endfor %}
         </div>
       </div>
+      {% endfor %}
     </div>
-  </div>
-  </div>
   </div>
 </main>
 <!-- Modals -->
