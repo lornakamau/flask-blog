@@ -16,7 +16,8 @@ def index():
     quote= get_quotes()
     quotes= repeat_get_quotes(10, get_quotes)
     all_posts=Post.get_posts()
-    posts=all_posts.paginate(per_page=5)
+    page = request.args.get('page', 1, type=int)
+    posts=all_posts.paginate(per_page=6)
     form= SubscribeForm()
     if form.validate_on_submit():
         email = form.email.data

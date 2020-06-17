@@ -55,6 +55,10 @@ a {
   background-color: #764abc;
   color: white;
 }
+.page-active {
+  background-color: white !important ;
+  color: #764abc !important;
+}
 .btn:hover{
   background-color: white;
   color: #111111;
