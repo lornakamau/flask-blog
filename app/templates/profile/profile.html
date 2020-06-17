@@ -5,64 +5,114 @@
 {% endblock styles%}
 {% block content %}
 <!--Main layout-->
-<main class="mt-5 pt-5">
+<main class="mt-5 mb-5">
   <div class="container">
-    <section class="mt-4">
-      <div class="container-fluid">
-        <div class="row text-center">
-          <!-- displaying  Username-->
-          <div class="col-md-1"></div>
-          <div class="col-md-3">
-            <h3> {{user.username| capitalize}}'s Profile </h3>
-            {% if user.profile_pic_path %}
-            <img src="{{url_for('static',filename=user.profile_pic_path)}}" alt=""><br><br>
-            {%else%}
-            <p><b>No profile picture</b></p>
-            {% endif %}
-            <!--Displaying user bio-->
-            {% if user.bio %}
-            <p> {{user.bio}}</p>
-            {%else%}
-            <p><b>{{user.username| capitalize}} has no bio.</b></p>
-            {% if user == current_user %}
-            <a href="{{url_for('main.update_bio',username=user.username)}}">Edit Bio</a><br><br>
-            {% endif %}
-            {% endif %}
-            {% if user == current_user %}
-            {% if user.bio %}
-            <a href="{{url_for('main.update_bio',username=user.username)}}">Edit Bio</a><br><br>
-            {% endif %}
-            {% endif %}
-            {% if user == current_user %}
-            <p><b>Update Profile Picture</b></p>
-            <form action="{{url_for('main.update_pic',username=user.username)}}" method="post"
-              enctype="multipart/form-data">
-              <input type="file" name="photo" class="form-control" required>
-              <input type="submit">
-            </form>
-            {% endif %}
+    <div class="container-fluid">
+      <div class="row text-center">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+          <!--Flash message -->
+          {% for message in get_flashed_messages() %}
+          <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
           </div>
-          <div class="col-md-7 posts">
-            {% if posts%}
-            <h3>POSTS BY {{user.username.upper()}}</h3>
-            <div id='cards' class="">
-              {% for post in posts %}
-              <div class="card" style="width:30rem">
-                <div class="mx-auto card-body">
-                  <h3 class="card-title">{{post.title}}</h3>
-                  <h6 class="card-subtitle mb-2 text-muted">Submitted on :{{post.posted.strftime('%Y-%m-%d')}}</h6>
-                  <p class="card-text">{{post.short_description}}</p>
+          {% endfor %}
+          <h2> {{user.username| capitalize}}'s Profile </h2>
+          {% if user.profile_pic_path %}
+          <img class="author-avatar" src="{{url_for('static',filename=user.profile_pic_path)}}" alt=""><br><br>
+          {%else%}
+          <p><b>No profile picture</b></p>
+          {% endif %}
+          <!--Displaying user bio-->
+          {% if user.bio %}
+          <p> {{user.bio}}</p>
+          {%else%}
+          <p><b>{{user.username| capitalize}} has no bio.</b></p>
+          {% if user == current_user %}
+          <a href="{{url_for('main.update_bio',username=user.username)}}">Edit Bio</a><br><br>
+          {% endif %}
+          {% endif %}
+          {% if user == current_user %}
+          {% if user.bio %}
+          <a href="{{url_for('main.update_bio',username=user.username)}}">Edit Bio</a><br><br>
+          {% endif %}
+          {% endif %}
+          {% if user == current_user %}
+          <p><b>Update Profile Picture</b></p>
+          <form action="{{url_for('main.update_pic',username=user.username)}}" method="post"
+            enctype="multipart/form-data">
+            <input type="file" name="photo" class="form-control" required>
+            <input type="submit">
+          </form>
+          {% endif %}
+        </div>
+        <div class="col-md-4"></div>
+      </div>
+      <div class="row" id="featured">
+        <h3 class="text-center">Posts by {{user.username.capitalize()}}</h3>
+        <div style="display: flex; flex-wrap: wrap;">
+          {% for post in posts %}
+          <div class="col-md-6 col-lg-6 col-sm-6 padlr10">
+            <div class="card">
+              <div class="row">
+                <div class="col-md-5 wrapthumbnail">
+                  <div class="thumbnail">
+                    <img src="{{url_for('static',filename=post.post_pic_path)}}" alt="">
+                  </div>
+                </div>
+                <div class="col-md-7">
+                  <div class="card-block">
+                    <h2 class="card-title">
+                      <a href="{{url_for('main.posts', post_id = post.id)}}">{{post.title}}</a>
+                    </h2>
+                    <span class="card-text d-block">{{post.short_description}}</span>
+                    <div class="metafooter">
+                      <div class="wrapfooter">
+                        {% if post.author == current_user%}
+                        <div>
+                          <button class="btn-sm m-1 btn-update"><a
+                              href="{{url_for('main.update_post',post_id=post.id)}}"><i
+                                class="fas fa-pencil-alt"></i>&nbsp;Update</a></button>
+                          <button class="btn-sm m-1 btn-delete" data-toggle="modal" data-target="#deletePostModal"><i
+                              class="fas fa-trash-alt"></i>&nbsp;Delete</button>
+                        </div>
+                        {%endif%}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              {% endfor %}
             </div>
-            {%else%}
-            <p>{{user.username| capitalize}} has no posts</p>
-            {%endif%}
           </div>
+          {% endfor %}
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+  </div>
   </div>
 </main>
+<!-- Modals -->
+{% for post in posts %}
+<div class="modal fade" id="deletePostModal" tabindex="-1" role="dialog" aria-labelledby="deletePostModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deletePostModalLabel">Delete post?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" data-dismiss="modal">Cancel</button>
+        <form action="{{url_for('main.delete_post',post_id=post.id)}}" method="POST" style="display: inline;">
+          <button type="submit" class="btn-danger">Yes, delete post</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
 {% endblock %}

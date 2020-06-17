@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm 
 from flask_uploads import UploadSet, IMAGES
 from wtforms import SubmitField,TextAreaField,StringField,SelectField
-from wtforms.validators import Required, Email
+from wtforms.validators import Required, Email, Length
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 from email_validator import validate_email, EmailNotValidError
 
@@ -9,8 +9,8 @@ images = UploadSet('photos', IMAGES)
 
 class PostForm(FlaskForm):
     title = StringField("Post Title", validators = [Required()])
-    short_description = TextAreaField("Give a short decription of your post", validators=[Required()])
-    post_content = TextAreaField('Post Content',validators = [Required()] )
+    short_description = StringField("Give a short decription of your post",validators = [Required(),Length(min=2,max=60,message='Must be shorter than 60 characters')])
+    post_content = TextAreaField('Post Content')
     submit = SubmitField('Submit')
 
 class CommentForm(FlaskForm):

@@ -5,40 +5,40 @@
 <link rel="stylesheet" href="{{url_for('static',filename='css/create_post.css')}}" type="text/css">
 {% endblock styles%}
 {% block content %}
-<main class="mt-5 pt-5">
+<main class="mt-5 mb-5">
   <div class="container">
-    <section class="mt-4">
-      <div class="container">
-        <h2 class="text-center">{{heading}}</h2>
-        <div class="row">
-          <div class="col-md-2"> </div>
-          <div class="col-md-8">
-            <!--Flash message -->
-            {% for message in get_flashed_messages() %}
-            <div class="alert alert-success">
-              <button type="button" class="close" data-dismiss="alert">&times;</button>
-              {{ message }}
-            </div>
-            {% endfor %}
-            <!-- Post form -->
-            <form action="" method="post" enctype="multipart/form-data">
-              {{post_form.hidden_tag()}}
-              {{post_form.title.label}}<br>
-              {{post_form.title(class = "form-control")}}<br>
-              {{post_form.short_description.label}}<br>
-              {{post_form.short_description(class = "form-control")}}<br>
-              {{post_form.post_content.label}}<br>
-              {{post_form.post_content(class = "form-control")}}<br>
-              <label for="photo">Post Photo</label>
-              <input type="file" name="photo" class="form-control" required><br>
-              {{post_form.submit}}
-              {{simplemde.load}}
-            </form>
-          </div>
-          <div class="col-md-2"> </div>
+    <h2 class="text-center">{{heading}}</h2>
+    <div class="row">
+      <div class="col-md-2"> </div>
+      <div class="col-md-8">
+        <!--Flash message -->
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-success">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          {{ message }}
         </div>
+        {% endfor %}
+        <!-- Post form -->
+        <h2 class="text-center">New Post</h2>
+        <form action="" method="post" enctype="multipart/form-data">
+          {{post_form.hidden_tag()}}
+          {{post_form.title.label}}<br>
+          {{post_form.title(class = "form-control")}}<br>
+          {{post_form.short_description.label}}<br>
+          {{post_form.short_description(class = "form-control")}}<br>
+          {% if post_form.short_description.errors %}
+          <div class="errors">{% for error in post_form.short_description.errors %}<p>{{ error }}</p>{% endfor %}</div>
+          {% endif %}
+          {{post_form.post_content.label}}<br>
+          {{post_form.post_content(class = "form-control")}}<br>
+          <label for="photo">Post Photo</label>
+          <input type="file" name="photo" class="form-control" required><br>
+          {{post_form.submit(class="btn")}}
+          {{simplemde.load}}
+        </form>
       </div>
-    </section>
+      <div class="col-md-2"> </div>
+    </div>
   </div>
 </main>
 {% endblock %}

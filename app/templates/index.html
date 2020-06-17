@@ -6,120 +6,95 @@
 {% endblock styles%}
 <!-- Content block -->
 {% block content %}
-<div id="header">
-</div>
 <!--Main layout-->
-<main class="mt-5 pt-5">
-  <div class="container">
-    <section class="mt-4">
-      <h2 class="text-center">Featured posts</h2>
-      <div id="myCarousel" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-          <div class="item active">
-            <p>{{quotes[0].quote}}</p>
-          </div>
-          {% for quote in quotes %}
-          {% if quote.quote == quotes[0].quote %}
-          {% else %}
-          <div class="item">
-            {{quote.quote}}
-          </div>
-          {% endif %}
-          {% endfor %}
+<main class="mt-5 mb-5">
+  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+      <div class="item active">
+        <img src="{{url_for('static',filename='images/home2.jpg')}}" alt="..." class="img-responsive">
+        <div class="carousel-caption">
+        <p>{{quotes[0].quote}}</p>
         </div>
       </div>
-      <div class="row" id="featured" style="display: flex; flex-wrap: wrap;">
-        {% for post in posts %}
-        <div class="col-md-6 col-lg-6 col-sm-6 padlr10">
-          <div class="card">
-            <div class="row">
-              <div class="col-md-5 wrapthumbnail">
-                <div class="thumbnail">
-                  <img src="{{url_for('static',filename=post.post_pic_path)}}" alt="">
-                </div>
+      {% for quote in quotes %}
+      {% if quote.quote == quotes[0].quote %}
+      {% else %}
+      <div class="item">
+        <img src="{{url_for('static',filename='images/home2.jpg')}}" alt="..." class="img-responsive">
+        <div class="carousel-caption">
+        {{quote.quote}}
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  <div class="container">
+    <h2 class="text-center">Featured posts</h2>
+    <div class="row" id="featured" style="display: flex; flex-wrap: wrap;">
+      {% for post in posts %}
+      <div class="col-md-6 col-lg-6 col-sm-6 padlr10">
+        <div class="card">
+          <div class="row">
+            <div class="col-md-5 wrapthumbnail">
+              <div class="thumbnail">
+                <img src="{{url_for('static',filename=post.post_pic_path)}}" alt="">
               </div>
-              <div class="col-md-7">
-                <div class="card-block">
-                  <h2 class="card-title">
-                    <a href="{{url_for('main.posts', post_id = post.id)}}">{{post.title}}</a>
-                  </h2>
-                  <span class="card-text d-block">{{post.short_description}}</span>
-                  <div class="metafooter">
-                    <div class="wrapfooter">
-                      <span class="meta-footer-thumb">
-                        <img alt src="{{url_for('static', filename='images/home.jpg')}}"
-                          class="avatar avatar-40 photo author-thumb jetpack-lazy-image" height="40" width="40">
-                      </span>
-                      <span class="author-meta">
-                        <span class="post-name">
-                          <a href="{{url_for('main.profile',username=post.author.username)}}">{{post.author.username}}</a></span><br>
-                        <span class="post-date">{{post.posted}}</span>
-                      </span>
-                    </div>
+            </div>
+            <div class="col-md-7">
+              <div class="card-block">
+                <h2 class="card-title">
+                  <a href="{{url_for('main.posts', post_id = post.id)}}">{{post.title}}</a>
+                </h2>
+                <span class="card-text d-block">{{post.short_description}}</span>
+                <div class="metafooter">
+                  <div class="wrapfooter">
+                    <span class="meta-footer-thumb">
+                      <img alt src="{{url_for('static', filename='images/home.jpg')}}"
+                        class="avatar avatar-40 photo author-thumb jetpack-lazy-image" height="40" width="40">
+                    </span>
+                    <span class="author-meta">
+                      <span class="post-name">
+                        <a
+                          href="{{url_for('main.profile',username=post.author.username)}}">{{post.author.username}}</a></span><br>
+                      <span class="post-date">{{post.posted.strftime('%B %d, %Y')}}</span>
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        {% endfor %}
       </div>
-    </section>
+      {% endfor %}
+    </div>
   </div>
 </main>
 <!--Main layout-->
-<footer class="page-footer text-center font-small mdb-color darken-2 mt-4 ">
-
-  <!--Call to action-->
+<footer class="page-footer text-center mt-4 ">
   <div class="pt-4">
-    {{wtf.quick_form(subscribe_form)}}
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <p>Be the first one to be notified of a new post</p>
+        {{wtf.quick_form(subscribe_form)}}</div>
+      <div class="col-md-4"></div>
+    </div>
   </div>
-  <!--/.Call to action-->
-
   <hr class="my-4">
-
-  <!-- Social icons -->
   <div class="pb-4">
-    <a href="https://www.facebook.com/mdbootstrap" target="_blank">
-      <i class="fab fa-facebook-f mr-3"></i>
-    </a>
-
-    <a href="https://twitter.com/MDBootstrap" target="_blank">
-      <i class="fab fa-twitter mr-3"></i>
-    </a>
-
-    <a href="https://www.youtube.com/watch?v=7MUISDJ5ZZ4" target="_blank">
-      <i class="fab fa-youtube mr-3"></i>
-    </a>
-
-    <a href="https://plus.google.com/u/0/b/107863090883699620484" target="_blank">
-      <i class="fab fa-google-plus-g mr-3"></i>
-    </a>
-
-    <a href="https://dribbble.com/mdbootstrap" target="_blank">
-      <i class="fab fa-dribbble mr-3"></i>
-    </a>
-
-    <a href="https://pinterest.com/mdbootstrap" target="_blank">
-      <i class="fab fa-pinterest mr-3"></i>
-    </a>
-
-    <a href="https://github.com/mdbootstrap/bootstrap-material-design" target="_blank">
-      <i class="fab fa-github mr-3"></i>
-    </a>
-
-    <a href="http://codepen.io/mdbootstrap/" target="_blank">
-      <i class="fab fa-codepen mr-3"></i>
-    </a>
+    <a href="/"><i class="fab fa-facebook-f mr-3"></i></a>
+    <a href="/"><i class="fab fa-twitter mr-3"></i></a>
+    <a href="/"><i class="fab fa-youtube mr-3"></i></a>
+    <a href="/"><i class="fab fa-google-plus-g mr-3"></i></a>
+    <a href="/"><i class="fab fa-dribbble mr-3"></i></a>
+    <a href="/"><i class="fab fa-pinterest mr-3"></i></a>
+    <a href="/"><i class="fab fa-github mr-3"></i></a>
+    <a href="/"><i class="fab fa-codepen mr-3"></i></a>
   </div>
-  <!-- Social icons -->
-
-  <!--Copyright-->
   <div class="footer-copyright py-3">
-    © 2019 Copyright: Lorna Kamau
+    © 2020 Copyright: Lorna Kamau
   </div>
-  <!--/.Copyright-->
-
 </footer>
 <!--/.Footer-->
 {% endblock %}

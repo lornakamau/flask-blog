@@ -6,17 +6,15 @@
 <!-- Content block -->
 {% block content %}
 <!--Main layout-->
-<main class="mt-5 pt-5">
+<main class="mt-5 mb-5">
   <div class="container">
-    <section class="mt-3">
       <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8 mb-4">
           <div class="card-body">
             <div class="media d-block d-md-flex mt-3">
-              <img class="mb-3 mx-auto z-depth-1"
-                src="{{url_for('static',filename=post.author.profile_pic_path)}}" alt=""
-                style="width: 100px;height: 100px;object-fit: cover; border-radius: 50px;">
+              <img class="mb-3 mx-auto z-depth-1" src="{{url_for('static',filename=post.author.profile_pic_path)}}"
+                alt="" style="width: 100px;height: 100px;object-fit: cover; border-radius: 50px;">
               <div class="media-body text-center text-md-left ml-md-3 ml-0">
                 <a href="{{url_for('main.profile',username=post.author.username)}}">
                   <h5 class="mt-0 font-weight-bold">{{post.author.username}}</h5>
@@ -25,81 +23,53 @@
               </div>
             </div>
           </div>
-          <h2 class="my-4 text-left">{{post.title}}</h2>
-          <p class="text-muted">{{post.posted.strftime('%B %d, %Y')}}</p>
-          <!--Featured Image-->
-            <img src="{{url_for('static',filename=post.post_pic_path)}}" class="img-fluid featured-image" alt="" width="730" height= "300" style="object-fit: cover; max-height: 300px !important;">
-          <!--/.Featured Image-->
-          <!--Card-->
-          <div class="card mb-4 ">
-            <!--Card content-->
-            <div class="card-body">
-              <blockquote class="blockquote">
-                <p class="mb-0">{{post.short_description}}</p>
-              </blockquote>
-              {{post.post_content}}
-              {% if post.author == current_user%}
-              <div>
-                <button class="btn btn-sm m-1 btn-info"><a
-                    href="{{url_for('main.update_post',post_id=post.id)}}">Update Post</a></button>
-                <button class="btn btn-sm m-1 btn-danger" data-toggle="modal" data-target="#deletePostModal">Delete
-                  Post</button>
-              </div>
-              {%endif%}
-            </div>
+          <div class="mb-3">
+            <h1 class="my-4 text-left">{{post.title}}</h1>
+            <p class="text-muted">{{post.posted.strftime('%B %d, %Y')}}</p><br>
+            <!--Featured Image-->
+            <img src="{{url_for('static',filename=post.post_pic_path)}}" class="img-fluid featured-image" alt=""
+              width="730" height="300" style="object-fit: cover; max-height: 300px !important;">
+            <!--/.Featured Image-->
+            <blockquote class="blockquote">
+              <p class="mb-0">{{post.short_description}}</p>
+            </blockquote>
+            {{format_post|safe}}
           </div>
-          {% for comment in comments %}
-          {% if comment.id == comments[0].id%}
-          <p class="card-header font-weight-bold">Comments</p>
-          {%endif%}
-          <div class="card card-comments mb-3">
-            <div class="card-body">
-              <div class="media d-block d-md-flex mt-4">
-                <img class="d-flex mb-3 mx-auto " src="https://mdbootstrap.com/img/Photos/Avatars/img (20).jpg"
-                  alt="Generic placeholder image"
-                  style="width: 80px;height: 80px;object-fit: cover; border-radius: 40px;">
-                <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                  <h5 class="mt-0 font-weight-bold">{{comment.commenter.username}}</h5>
-                  {{comment.comment_content}}
+          <div class="mt-3">
+            {% for comment in comments %}
+            {% if comment.id == comments[0].id%}
+            <p class="card-header font-weight-bold">Comments</p>
+            {%endif%}
+            <div class="card-comments mb-3">
+              <div class="card-body">
+                <div class="media d-block d-md-flex mt-4">
+                  <img class="d-flex mb-3 mx-auto " src="https://mdbootstrap.com/img/Photos/Avatars/img (20).jpg"
+                    alt="Generic placeholder image"
+                    style="width: 80px;height: 80px;object-fit: cover; border-radius: 40px;">
+                  <div class="media-body text-center text-md-left ml-md-3 ml-0">
+                    <h5 class="mt-0 font-weight-bold">{{comment.commenter.username}}</h5>
+                    {{comment.comment_content}}
+                  </div>
+                  {% if post.author == current_user%}
+                  <button class="btn btn-sm m-1 btn-danger" data-toggle="modal" data-target="#deleteCommentModal">Delete
+                    Comment</button>
+                  {%endif%}
                 </div>
-                {% if post.author == current_user%}
-                <button class="btn btn-sm m-1 btn-danger" data-toggle="modal" data-target="#deleteCommentModal">Delete Comment</button>
-                {%endif%}
               </div>
             </div>
+            {% endfor %}
           </div>
-          {% endfor %}
-          <div class="card mb-3 ">
+          <div class="mt-3 ">
             {{comment_form.hidden_tag()}}
             {{wtf.quick_form(comment_form)}}
           </div>
         </div>
         <div class="col-md-2"></div>
       </div>
-    </section>
+
   </div>
 </main>
 <!--Main layout-->
-<!-- Modals -->
-<div class="modal fade" id="deletePostModal" tabindex="-1" role="dialog" aria-labelledby="deletePostModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="deletePostModalLabel">Delete post?</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <form action="{{url_for('main.delete_post',post_id=post.id)}}" method="POST" style="display: inline;">
-          <button type="submit" class="btn btn-danger">Yes, delete post</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
 {%for comment in comments%}
 <div class="modal fade" id="deleteCommentModal" tabindex="-1" role="dialog" aria-labelledby="deleteCommentModalLabel"
   aria-hidden="true">
@@ -112,9 +82,10 @@
         </button>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <form action="{{url_for('main.delete_comment',post_id=post.id, comment_id=comment.id)}}" method="POST" style="display: inline;">
-          <button type="submit" class="btn btn-danger">Yes, delete comment</button>
+        <button type="button" class="btn-secondary" data-dismiss="modal">Cancel</button>
+        <form action="{{url_for('main.delete_comment',post_id=post.id, comment_id=comment.id)}}" method="POST"
+          style="display: inline;">
+          <button type="submit" class="btn-danger">Yes, delete comment</button>
         </form>
       </div>
     </div>
@@ -122,4 +93,29 @@
 </div>
 <!-- Modals -->
 {%endfor%}
+<footer class="page-footer text-center mt-4 ">
+  <div class="pt-4">
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <p>Be the first one to be notified of a new post</p>
+        {{wtf.quick_form(subscribe_form)}}</div>
+      <div class="col-md-4"></div>
+    </div>
+  </div>
+  <hr class="my-4">
+  <div class="pb-4">
+    <a href="/"><i class="fab fa-facebook-f mr-3"></i></a>
+    <a href="/"><i class="fab fa-twitter mr-3"></i></a>
+    <a href="/"><i class="fab fa-youtube mr-3"></i></a>
+    <a href="/"><i class="fab fa-google-plus-g mr-3"></i></a>
+    <a href="/"><i class="fab fa-dribbble mr-3"></i></a>
+    <a href="/"><i class="fab fa-pinterest mr-3"></i></a>
+    <a href="/"><i class="fab fa-github mr-3"></i></a>
+    <a href="/"><i class="fab fa-codepen mr-3"></i></a>
+  </div>
+  <div class="footer-copyright py-3">
+    © 2020 Copyright: Lorna Kamau
+  </div>
+</footer>
 {% endblock %}

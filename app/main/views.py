@@ -1,3 +1,4 @@
+import markdown2 
 from flask import render_template,abort,redirect,url_for,request,flash
 from . import main
 from ..models import User, Post, Comment, MailList
@@ -24,19 +25,62 @@ def index():
         return redirect(url_for('main.index'))
     return render_template('index.html', title=title, posts=posts, quotes=quotes, subscribe_form=form)
 
-@main.route('/Posts/<post_id>',methods=['GET', 'POST'] )
+@main.route('/Posts/<post_id>',methods=['GET', 'POST'])
+@login_required
 def posts(post_id):
     post= Post.get_post(post_id)
+    if post is None:
+        abort(404)
+    format_post = markdown2.markdown(post.post_content,extras=["code-friendly", "fenced-code-blocks"])
     all_comments = Comment.get_comments(post.id)
     print(all_comments)
-    form=CommentForm()
-    if form.validate_on_submit():
-        comment = Comment(comment_content = form.comment_content.data, commenter=current_user, post_id=post_id)
+    comment_form=CommentForm()
+    if comment_form.validate_on_submit():
+        comment = Comment(comment_content = comment_form.comment_content.data, commenter=current_user, post_id=post_id)
         db.session.add(comment)
         db.session.commit()
         return redirect(url_for('main.posts', post_id = post.id))
+    subscribe_form= SubscribeForm()
+    if subscribe_form.validate_on_submit():
+        email = form.email.data
+        new_mail = MailList(email = email)
+
+        db.session.add(new_mail)
+        db.session.commit()
+        return redirect(url_for('main.posts', post_id=post.id))
     title= post.title + ' | SoftBlog'
-    return render_template('posts.html', title=title, post=post, comments=all_comments, comment_form=form)
+    return render_template('posts.html', title=title, post=post, comments=all_comments, comment_form=comment_form, format_post=format_post, subscribe_form=subscribe_form)
+
+@main.route('/Post/<post_id>')
+def single_post(post_id):
+    post= Post.get_post(post_id)
+    if post is None:
+        abort(404)
+    format_post = markdown2.markdown(post.post_content,extras=["code-friendly", "fenced-code-blocks"])
+    return render_template('posts.html', post_id=post.id, format_post=format_post)
+
+@main.route('/New-post', methods=['GET', 'POST'])
+@login_required
+def new_post():
+    title = 'New Post | SoftBlog'
+    heading = "New Post"
+    form = PostForm()
+    if form.validate_on_submit() and 'photo' in request.files:
+        filename = photos.save(request.files['photo'])
+        path=f'photos/{filename}'
+        post = Post(post_content=form.post_content.data, author=current_user, title=form.title.data, short_description=form.short_description.data, post_pic_path=path)
+        db.session.add(post)
+        db.session.commit()
+        mailList = MailList.query.all()
+        subscribers = []
+        for subscriber in mailList:
+            subscribers.append(subscriber.email)
+        for subscriber in subscribers:
+            subscribe_message("New post on SoftBlog!","email/subscribe", subscriber, user = current_user, heading=heading)
+        flash('Your post has been posted!', 'success')
+        return redirect(url_for('main.index'))
+
+    return render_template('posts/add_post.html',title=title, post_form=form)
 
 @main.route('/Posts/<post_id>/update', methods=['GET', 'POST'] )
 @login_required
@@ -79,30 +123,7 @@ def delete_post(post_id):
     db.session.delete(post)
     db.session.commit()
     flash('Your post has been deleted!', 'success')
-    return redirect(url_for('main.index'))
-
-@main.route('/New-post', methods=['GET', 'POST'])
-@login_required
-def new_post():
-    title = 'New Post | SoftBlog'
-    heading = "New Post"
-    form = PostForm()
-    if form.validate_on_submit() and 'photo' in request.files:
-        filename = photos.save(request.files['photo'])
-        path=f'photos/{filename}'
-        post = Post(post_content=form.post_content.data, author=current_user, title=form.title.data, short_description=form.short_description.data, post_pic_path=path)
-        db.session.add(post)
-        db.session.commit()
-        mailList = MailList.query.all()
-        subscribers = []
-        for subscriber in mailList:
-            subscribers.append(subscriber.email)
-        for subscriber in subscribers:
-            subscribe_message("New post on SoftBlog!","email/subscribe", subscriber, user = current_user, heading=heading)
-        flash('Your post has been posted!', 'success')
-        return redirect(url_for('main.index'))
-
-    return render_template('posts/add_post.html',title=title, post_form=form)
+    return redirect(url_for('main.posts', post_id = post.id))
 
 @main.route("/Comment/<int:post_id>", methods=['GET', 'POST'])
 @login_required

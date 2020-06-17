@@ -2,13 +2,9 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block content %}
-<main class="mt-5 pt-5">
+<main class="mt-5 mb-5">
   <div class="container">
-    <section class="mt-4">
-      <div class="container">
         {{wtf.quick_form(form)}}
-      </div>
-    </section>
   </div>
 </main>
 {% endblock %}

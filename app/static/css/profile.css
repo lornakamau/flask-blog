@@ -1,18 +1,8 @@
-img{
+.author-avatar{
     border-radius: 100px;
     width: 200px;
     height: 200px;
     object-fit: cover;
     margin: 1%;
     margin-bottom: 3%;
-}
-.row{
-    padding-top: 2%;
-}
-#cards{
-    display: flex;
-    flex-wrap: wrap;
-}
-.card{
-    margin: 3%;
 }
