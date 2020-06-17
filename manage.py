@@ -4,7 +4,7 @@ from app.models import User, Comment, Post
 from  flask_migrate import Migrate, MigrateCommand
 
 # Creating app instance
-app = create_app('development')
+app = create_app('test')
 
 manager = Manager(app)
 manager.add_command('server',Server)
