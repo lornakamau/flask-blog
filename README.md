@@ -6,6 +6,7 @@
 SoftBlog is a software development blog that allows software developers around the world to write posts on anything software development.
 
 ![landing](./app/static/images/landing.png)
+![featured](./app/static/images/featured.png)
 
 ## Live link
 Visit the application on https://softblog.herokuapp.com/ .
